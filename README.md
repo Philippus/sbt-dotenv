@@ -6,6 +6,8 @@ But it is not always practical to set environment variables on development machi
 
 SBT dotenv is intended to be used in development.
 
+[![Build Status](https://travis-ci.org/mefellows/sbt-dotenv.svg?branch=master)](https://travis-ci.org/mefellows/sbt-dotenv)
+
 ##Installation
 
 Add the following line to your ```plugins.sbt``` file:
