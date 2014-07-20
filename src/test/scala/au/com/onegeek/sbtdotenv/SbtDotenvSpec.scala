@@ -42,7 +42,8 @@ class SbtDotenvSpec extends WordSpec  with Matchers   {
       }
 
       "Read .env file into an environment Map" in {
-        val file = new File(getClass.getResource("/.dotenv.valid").getFile)
+//        val file = new File(getClass.getResource(".dotenv.valid").getFile)
+        val file = new File("./src/test/resources/.dotenv.valid")
         val map = SbtDotenv.parseFile(file)
 
         map.get("MONGO_PORT") should equal ("17017")
