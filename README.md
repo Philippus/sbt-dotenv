@@ -10,10 +10,21 @@ SBT dotenv is intended to be used in development.
 
 ##Installation
 
+Add the following to your sbt `project/plugins.sbt` file:
+
+```scala
+resolvers += Resolver.url(
+  "bintray-sbt-plugin-releases",
+    url("http://dl.bintray.com/content/sbt/sbt-plugin-releases"))(
+        Resolver.ivyStylePatterns)
+
+addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
+```
+
 Add the following line to your ```plugins.sbt``` file:
 
 ```scala
-    addSbtPlugin("au.com.onegeek.sbtdotenv" %% "sbt-dotenv" % "0.1-SNAPSHOT")
+    addSbtPlugin("au.com.onegeek.sbtdotenv" %% "sbt-dotenv" % "1.0.0")
 ```
 
 That's it - as soon as you start using SBT the environment is prepared.
