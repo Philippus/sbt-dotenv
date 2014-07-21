@@ -62,7 +62,9 @@ object SbtDotenv extends AutoPlugin {
 
     val dotEnvFile: File = new File(configuration.baseDirectory + "/.env")
     parseFile(dotEnvFile).map { environment =>
+      state.log.debug(s".env detected. About to configure JVM System Environment with new map: $environment")
       DirtyEnvironmentHack.setEnv((sys.env ++ environment).asJava)
+      state.log.info("Configured .env Environment")
     }
     state
   }
@@ -74,7 +76,9 @@ object SbtDotenv extends AutoPlugin {
    * @return
    */
   def parseFile(file: File): Option[Map[String, String]] = {
-    if (!file.exists) None
+    if (!file.exists) {
+      None
+    }
     else {
       val source = Source.fromFile(file)
       val result = source.getLines().filter(isValidLine(_)).foldLeft(Map[String, String]())((env, line) => {
