@@ -5,13 +5,14 @@ jdk:
 - oraclejdk8
 - oraclejdk7
 - openjdk7
+env:
+  global:
+  - secure: glhEB9krKsLbmcoQ5l6uDPGX+WWYThNwK24eUFkqutnum2avk98Z3e5sXtldDR386E1GSaDZYzWE8rv0AF9Xdqz4MvnZ/ZK11DtUfvWt9Vrd/NhsV081Mks3iJsyq9rqxk0byazUCuosuCnRTr4jzSE5LrGp2w7Fe1C/yKETYTc=
+  - secure: LSz3qTRwykG5moCbWZoDH0eDu4EKEg89N3imxdGJfSrsX/iFpVKtFWfhk78vqBnJYj34H8jfNsm7v4ar8r4QFAXUGVrwAIBDcHuTDVphYBqwLdeImINb9gmUefOwg8z3aFqjkrnxts3U01K4Iuk1R5V6zTsBv5bXIp55/squ1oA=
+
 after_success:
   - >
       test "${TRAVIS_PULL_REQUEST}" = 'false' &&
       test "${TRAVIS_JDK_VERSION}" = 'oraclejdk7' &&
       sh "$TRAVIS_BUILD_DIR/.travis.credentials.sh" &&
       sbt 'set version := version.value + "." + System.getenv("TRAVIS_BUILD_NUMBER")' publish
-env:
-  global:
-  - secure: lt6MXjUxO/vIcW68sYZl7S3rNP4sOw0XXoppXASjdRb3xsOGx093Nc6RkpTD1vaY8YLS8voGp2WF531A3/tS4O0Kt7BS62F+r/5fXpdjrEPoIB4/7DYsPzhyoUvhn7n0Jx8LvJtSEowfU1B+vui6NcYeazIbR2OckRI4qOTghHw=
-  - secure: k4V5nZzmPmKps6dPxgzwUD0MqVu2pWFNd/x3MDihUf+WNt1+yAoS+j44IYbR2yDWgwRHKQ6UO5fczJPbPF4>9p/CGHA7IrGCCzi++Sk1xrCre4zdFKdp9BQcSD4hZEfcIoCac5/TbotziJrLva9B2snV1K8mORu8pCTs1eSEEzsU=

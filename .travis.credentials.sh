@@ -1,9 +1,11 @@
 #!/bin/bash
 mkdir ~/.bintray/
-cat <<EOF >~/.bintray/.credentials
+FILE=$HOME/.bintray/.credentials
+cat <<EOF >
     realm = Bintray API Realm
     host = api.bintray.com
     user = $BINTRAY_USER
     password = $BINTRAY_API_KEY
 EOF
-echo "Created ~/.bintray/.credentials file"
+echo "Created ~/.bintray/.credentials file: Here it is: "
+ls -la $FILE
