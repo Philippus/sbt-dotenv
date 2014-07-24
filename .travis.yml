@@ -6,11 +6,9 @@ jdk:
 - oraclejdk7
 - openjdk7
 after_success:
-  - >
-      test "${TRAVIS_PULL_REQUEST}" = 'false' &&
-      test "${TRAVIS_JDK_VERSION}" = 'oraclejdk7' &&
-      sbt 'set credentials in bintray := Seq(Credentials("Bintray API Realm", "api.bintray.com", System.getenv("BINTRAY_USER"), System.getenv("BINTRAY_API_KEY")))' 'set version := version.value + "." + System.getenv("TRAVIS_BUILD_NUMBER")' publish
-
+- |
+  test "${TRAVIS_PULL_REQUEST}" = 'false' && test "${TRAVIS_JDK_VERSION}" = 'oraclejdk7' && sbt 'set credentials in bintray := Seq(Credentials("Bintray API Realm", "api.bintray.com", System.getenv("BINTRAY_USER"), System.getenv("BINTRAY_API_KEY")))' 'set version := version.value + "." + System.getenv("TRAVIS_BUILD_NUMBER")' publish
 env:
   global:
-    secure: lt6MXjUxO/vIcW68sYZl7S3rNP4sOw0XXoppXASjdRb3xsOGx093Nc6RkpTD1vaY8YLS8voGp2WF531A3/tS4O0Kt7BS62F+r/5fXpdjrEPoIB4/7DYsPzhyoUvhn7n0Jx8LvJtSEowfU1B+vui6NcYeazIbR2OckRI4qOTghHw=
+  - secure: lt6MXjUxO/vIcW68sYZl7S3rNP4sOw0XXoppXASjdRb3xsOGx093Nc6RkpTD1vaY8YLS8voGp2WF531A3/tS4O0Kt7BS62F+r/5fXpdjrEPoIB4/7DYsPzhyoUvhn7n0Jx8LvJtSEowfU1B+vui6NcYeazIbR2OckRI4qOTghHw=
+  - secure: k4V5nZzmPmKps6dPxgzwUD0MqVu2pWFNd/x3MDihUf+WNt1+yAoS+j44IYbR2yDWgwRHKQ6UO5fczJPbPF49p/CGHA7IrGCCzi++Sk1xrCre4zdFKdp9BQcSD4hZEfcIoCac5/TbotziJrLva9B2snV1K8mORu8pCTs1eSEEzsU=
