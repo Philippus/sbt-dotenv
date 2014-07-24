@@ -1,7 +1,16 @@
 language: scala
 scala:
-  - 2.10.3
+- 2.10.3
 jdk:
-  - oraclejdk8
-  - oraclejdk7
-  - openjdk7
+- oraclejdk8
+- oraclejdk7
+- openjdk7
+after_success:
+  - >
+      test "${TRAVIS_PULL_REQUEST}" = 'false' &&
+      test "${TRAVIS_JDK_VERSION}" = 'oraclejdk7' &&
+      sbt 'credentials in bintray := Seq(Credentials("Bintray API Realm", "api.bintray.com", "mefellows", System.getenv("BINTRAY_API_KEY")))' publish
+
+env:
+  global:
+    secure: lt6MXjUxO/vIcW68sYZl7S3rNP4sOw0XXoppXASjdRb3xsOGx093Nc6RkpTD1vaY8YLS8voGp2WF531A3/tS4O0Kt7BS62F+r/5fXpdjrEPoIB4/7DYsPzhyoUvhn7n0Jx8LvJtSEowfU1B+vui6NcYeazIbR2OckRI4qOTghHw=
