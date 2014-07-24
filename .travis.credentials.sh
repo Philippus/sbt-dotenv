@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir ~/.bintray/
 FILE=$HOME/.bintray/.credentials
-cat <<EOF >
+cat <<EOF >$FILE
     realm = Bintray API Realm
     host = api.bintray.com
     user = $BINTRAY_USER
