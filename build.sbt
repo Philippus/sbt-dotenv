@@ -1,4 +1,5 @@
 import bintray.Keys._
+import bintray._
 
 sbtPlugin := true
 
@@ -14,7 +15,7 @@ version := "1.0"
 
 publishMavenStyle := false
 
-bintrayPublishSettings
+bintraySettings:_*
 
 repository in bintray := "sbt-plugins"
 
