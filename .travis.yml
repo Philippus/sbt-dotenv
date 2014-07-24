@@ -9,7 +9,7 @@ after_success:
   - >
       test "${TRAVIS_PULL_REQUEST}" = 'false' &&
       test "${TRAVIS_JDK_VERSION}" = 'oraclejdk7' &&
-      sbt 'credentials in bintray := Seq(Credentials("Bintray API Realm", "api.bintray.com", "mefellows", System.getenv("BINTRAY_API_KEY")))' 'set version := version.value + "." + System.getenv("TRAVIS_BUILD_NUMBER")' publish
+      sbt 'set credentials in bintray := Seq(Credentials("Bintray API Realm", "api.bintray.com", "mefellows", System.getenv("BINTRAY_API_KEY")))' 'set version := version.value + "." + System.getenv("TRAVIS_BUILD_NUMBER")' publish
 
 env:
   global:
