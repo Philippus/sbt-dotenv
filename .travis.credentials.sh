@@ -6,3 +6,4 @@ cat <<EOF >~/.bintray/.credentials
     user = $BINTRAY_USER
     password = $BINTRAY_API_KEY
 EOF
+echo "Created ~/.bintray/.credentials file"
