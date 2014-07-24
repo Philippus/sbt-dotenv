@@ -15,7 +15,7 @@ version := "1.0"
 
 publishMavenStyle := false
 
-bintraySettings:_*
+bintrayPublishSettings
 
 repository in bintray := "sbt-plugins"
 
