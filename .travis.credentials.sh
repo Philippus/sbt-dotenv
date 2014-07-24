@@ -7,5 +7,6 @@ cat <<EOF >$FILE
     user = $BINTRAY_USER
     password = $BINTRAY_API_KEY
 EOF
+echo $BINTRAY_USER
 echo "Created ~/.bintray/.credentials file: Here it is: "
 ls -la $FILE
