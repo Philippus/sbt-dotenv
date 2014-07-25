@@ -11,7 +11,7 @@ organization := "au.com.onegeek"
 
 libraryDependencies += "org.scalatest" % "scalatest_2.10" % "2.1.0" % "test"
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.10.4"
 
 version := "1.0"
 
