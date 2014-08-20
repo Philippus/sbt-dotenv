@@ -19,6 +19,8 @@ resolvers += Resolver.url(
         Resolver.ivyStylePatterns)
 
 addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
+
+resolvers += Classpaths.sbtPluginReleases
 ```
 
 Add the following line to your ```plugins.sbt``` file:
