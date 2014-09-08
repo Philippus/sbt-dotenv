@@ -15,18 +15,14 @@ Add the following to your sbt `project/plugins.sbt` file:
 ```scala
 resolvers += Resolver.url(
   "bintray-sbt-plugin-releases",
-    url("http://dl.bintray.com/content/sbt/sbt-plugin-releases"))(
-        Resolver.ivyStylePatterns)
+  url("http://dl.bintray.com/content/sbt/sbt-plugin-releases"))(
+    Resolver.ivyStylePatterns)
 
 addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
 
 resolvers += Classpaths.sbtPluginReleases
-```
 
-Add the following line to your ```plugins.sbt``` file:
-
-```scala
-    addSbtPlugin("au.com.onegeek.sbtdotenv" %% "sbt-dotenv" % "1.0.17")
+addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.0.21")
 ```
 
 That's it - as soon as you start using SBT the environment is prepared.
