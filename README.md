@@ -22,7 +22,7 @@ addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
 
 resolvers += Classpaths.sbtPluginReleases
 
-addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.0.21")
+addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.0.24")
 ```
 
 That's it - as soon as you start using SBT the environment is prepared.
@@ -41,6 +41,10 @@ I_BLOW_MY_NOSE=At you
 ## Should I commit my .env file?
 
 It is recommended that you store development-only settings in your `.env` file, and commit it to your repository. Make sure that all your credentials for your development environment are different from your other deployments. This makes it easy for other developers to get started on your project, without compromising your credentials for other environments.
+
+## SBT Version
+
+Please note that this plugin takes advantage of SBT [Auto Plugins](http://www.scala-sbt.org/0.13/docs/Plugins.html) and therefore only works in SBT v0.13.5+
 
 ## Contributing
 

@@ -60,12 +60,18 @@ object SbtDotenv extends AutoPlugin {
 
     import scala.collection.JavaConverters._
 
+    state.log.debug(s"Base directory: ${configuration.baseDirectory}")
+    state.log.debug(s"looking for .env file: ${configuration.baseDirectory}/.env")
     val dotEnvFile: File = new File(configuration.baseDirectory + "/.env")
     parseFile(dotEnvFile).map { environment =>
       state.log.debug(s".env detected. About to configure JVM System Environment with new map: $environment")
       DirtyEnvironmentHack.setEnv((sys.env ++ environment).asJava)
-      state.log.info("Configured .env Environment")
-    }
+      state.log.info("Configured .env environment")
+    }.getOrElse({
+        state.log.debug(s".env file not found, no .env environment configured.")
+        state
+      }
+    )
     state
   }
 
