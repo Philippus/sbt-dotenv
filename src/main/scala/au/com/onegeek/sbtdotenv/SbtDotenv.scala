@@ -20,10 +20,11 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 package au.com.onegeek.sbtdotenv
 
-import sbt.Keys._
 import sbt._
+import sbt.Keys._
 
 import scala.io.Source
 
@@ -34,46 +35,51 @@ import scala.io.Source
  *
  */
 object SbtDotenv extends AutoPlugin {
-
   object autoImport {
-    val dotEnv = (s: State) => configureEnvironment(s)
+    val dotEnvFile = SettingKey[String]("dot-env-file", "Path to .env file to be loaded")
+    val dotEnvOverride = SettingKey[Boolean]("dot-env-override", "Whether the .env file should override system variables")
   }
 
-  import au.com.onegeek.sbtdotenv.SbtDotenv.autoImport._
+  import autoImport._
 
   override def trigger = allRequirements
 
-  // Automatically configure environment on load
   override lazy val buildSettings = Seq(
-    onLoad in Global ~= (dotEnv compose _)
+    dotEnvFile := (baseDirectory.value / ".env").toString,
+    dotEnvOverride := true,
+    onLoad in Global ~= (_ andThen { state =>
+      val project = Project.extract(state)
+      configureEnvironment(project.get(dotEnvFile), state.log, project.get(dotEnvOverride))
+      state
+    })
   )
 
   /**
    * Configures the SBT environment from a dotfile (.env) if one exists.
    *
-   * @param state
+   * @param file Path to the file to load
    * @return
    */
-  def configureEnvironment(state: State): State = {
-
-    import state._
-
+  def configureEnvironment(file: String, logger: Logger, overrideSystem: Boolean): Unit = {
     import scala.collection.JavaConverters._
 
-    state.log.debug(s"Base directory: ${configuration.baseDirectory}")
-    state.log.debug(s"looking for .env file: ${configuration.baseDirectory}/.env")
-    val dotEnvFile: File = new File(configuration.baseDirectory + "/.env")
-    parseFile(dotEnvFile).map { environment =>
-      state.log.debug(s".env detected. About to configure JVM System Environment with new map: $environment")
-      NativeEnvironmentManager.setEnv(environment.asJava)
-      DirtyEnvironmentHack.setEnv((sys.env ++ environment).asJava)
-      state.log.info("Configured .env environment")
-    }.getOrElse({
-        state.log.debug(s".env file not found, no .env environment configured.")
-        state
+    logger.debug(s"Looking for .env file: $file")
+
+    val openFile = new File(file)
+    parseFile(openFile).map { environment =>
+      val filteredEnv = if(!overrideSystem) {
+        environment -- sys.env.keySet
+      } else {
+        environment
       }
-    )
-    state
+
+      logger.debug(s".env detected. About to configure JVM System Environment with new map: $environment")
+      NativeEnvironmentManager.setEnv(filteredEnv.asJava)
+      DirtyEnvironmentHack.setEnv((sys.env ++ filteredEnv).asJava)
+      logger.info(s"Configured environment from file: $file")
+    }.getOrElse {
+      logger.debug(s"Environment file not found, skipping: $file")
+    }
   }
 
   /**
@@ -88,12 +94,12 @@ object SbtDotenv extends AutoPlugin {
     }
     else {
       val source = Source.fromFile(file)
-      val result = source.getLines().filter(isValidLine(_)).foldLeft(Map[String, String]())((env, line) => {
+      val result = source.getLines().filter(isValidLine).foldLeft(Map[String, String]())((env, line) => {
         parseLine(line) match {
           case Some(e) => env + (e._1 -> e._2)
         }
       })
-      source.close
+      source.close()
       Some(result)
     }
   }
@@ -108,7 +114,9 @@ object SbtDotenv extends AutoPlugin {
    */
   def parseLine(line: String): Option[(String, String)] = {
     isValidLine(line) match {
-      case true => Some((line.split("=")(0) -> line.split("=")(1)))
+      case true =>
+        val split = line.split("=", 2)
+        Some(split(0) -> split(1))
       case false => None
     }
   }
