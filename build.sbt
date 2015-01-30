@@ -9,7 +9,10 @@ description := "An SBT Plugin to load environment variables from .env into the J
 
 organization := "au.com.onegeek"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.1.0" % "test"
+libraryDependencies ++= Seq(
+    "net.java.dev.jna" % "jna" % "4.1.0",
+    "org.scalatest" %% "scalatest" % "2.1.0" % "test"
+)
 
 scalaVersion := "2.10.4"
 
