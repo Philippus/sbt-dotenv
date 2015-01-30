@@ -16,7 +16,7 @@ libraryDependencies ++= Seq(
 
 scalaVersion := "2.10.4"
 
-version := "1.0"
+version := "1.1"
 
 publishMavenStyle := false
 
