@@ -69,6 +69,9 @@ class SbtDotenvSpec extends WordSpec  with Matchers   {
         SbtDotenv.isValidLine("SOMETHING_TOKEN=I love kittens") should equal (true)
         SbtDotenv.parseLine("SOMETHING=I love kittens") should equal (Some("SOMETHING", "I love kittens"))
 
+        SbtDotenv.isValidLine("FOO='a=b==ccddd'") should equal(true)
+        SbtDotenv.parseLine("FOO='a=b==ccddd'") should equal(Some("FOO", "'a=b==ccddd'"))
+
         SbtDotenv.isValidLine("F") should equal(false)
         SbtDotenv.parseLine("F") should equal(None)
 
