@@ -22,7 +22,7 @@ addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
 
 resolvers += Classpaths.sbtPluginReleases
 
-addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.1.29")
+addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.1.33")
 ```
 
 That's it - as soon as you start using SBT the environment is prepared.
