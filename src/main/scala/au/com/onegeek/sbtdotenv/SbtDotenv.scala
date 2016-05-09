@@ -108,7 +108,10 @@ object SbtDotenv extends AutoPlugin {
    */
   def parseLine(line: String): Option[(String, String)] = {
     isValidLine(line) match {
-      case true => Some((line.split("=", 2)(0) -> line.split("=", 2)(1)))
+      case true => {
+        val splitted = line.split("=", 2)
+        Some(splitted(0) -> splitted(1).split(" #")(0).trim)
+      }
       case false => None
     }
   }

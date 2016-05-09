@@ -77,6 +77,12 @@ class SbtDotenvSpec extends WordSpec  with Matchers   {
 
         SbtDotenv.isValidLine("") should equal(false)
         SbtDotenv.parseLine("") should equal(None)
+
+        SbtDotenv.isValidLine("WITHOUT_COMMENT=ThisIsValue # here is a comment") should equal (true)
+        SbtDotenv.parseLine("WITHOUT_COMMENT=ThisIsValue # here is a comment") should equal (Some("WITHOUT_COMMENT", "ThisIsValue"))
+
+        SbtDotenv.isValidLine("WITH_HASH_URL=http://example.com#awesome-id") should equal (true)
+        SbtDotenv.parseLine("WITH_HASH_URL=http://example.com#awesome-id") should equal (Some("WITH_HASH_URL", "http://example.com#awesome-id"))
       }
 
       "Provide a SBT CLI warning if file contents invalid" in {
