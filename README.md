@@ -22,7 +22,7 @@ addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
 
 resolvers += Classpaths.sbtPluginReleases
 
-addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.1.33")
+addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.1.36")
 ```
 
 That's it - as soon as you start using SBT the environment is prepared.
@@ -50,6 +50,6 @@ Please note that this plugin takes advantage of SBT [Auto Plugins](http://www.sc
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`) and, optionally, squash history (`git rebase -i <previous commit hash>`) 
+3. Commit your changes (`git commit -am 'Added some feature'`) and, optionally, squash history (`git rebase -i <previous commit hash>`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
