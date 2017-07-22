@@ -14,6 +14,12 @@ libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "2.1.0" % "test"
 )
 
+ScriptedPlugin.scriptedSettings
+scriptedLaunchOpts := { scriptedLaunchOpts.value ++
+  Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
+}
+scriptedBufferLog := false
+
 scalaVersion := "2.10.4"
 
 version := "1.1"
