@@ -22,7 +22,7 @@ scriptedBufferLog := false
 
 scalaVersion := "2.10.4"
 
-version := "1.1"
+version := "1.1.38-SNAPSHOT"
 
 publishMavenStyle := false
 
