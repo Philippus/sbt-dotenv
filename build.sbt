@@ -20,7 +20,7 @@ scriptedLaunchOpts := { scriptedLaunchOpts.value ++
 }
 scriptedBufferLog := false
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.10.6"
 
 version := "1.1.38-SNAPSHOT"
 
