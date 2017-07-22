@@ -23,7 +23,6 @@
 package au.com.onegeek.sbtdotenv
 
 import java.io.File
-
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.io.Source
@@ -31,18 +30,15 @@ import scala.io.Source
 /**
  * Created by mfellows on 20/07/2014.
  */
-class SbtDotenvSpec extends WordSpec  with Matchers   {
-
+class SbtDotenvSpec extends WordSpec with Matchers {
     "The plugin parser" should {
-
-      "Do nothing if no .env file exists" in {
+      "do nothing if no .env file exists" in {
         val file = new File("thisfilecannotexistunlessyoucreateit")
         val map = SbtDotenv.parseFile(file)
         map should equal (None)
       }
 
-      "Read .env file into an environment Map" in {
-//        val file = new File(getClass.getResource(".dotenv.valid").getFile)
+      "read .env file into an environment Map" in {
         val file = new File("./src/test/resources/.dotenv.valid")
         val map = SbtDotenv.parseFile(file)
 
@@ -50,7 +46,7 @@ class SbtDotenvSpec extends WordSpec  with Matchers   {
         map.get("COVERALLS_REPO_TOKEN") should equal ("aoeucaPDc2rvkFugUGlNaCGu3EOeoaeu63WLo5")
       }
 
-      "Validate correct lines in a .env file" in {
+      "validate correct lines in a .env file" in {
         SbtDotenv.isValidLine("FOO=bar") should equal(true)
         SbtDotenv.parseLine("FOO=bar") should equal(Some("FOO", "bar"))
 
@@ -83,14 +79,6 @@ class SbtDotenvSpec extends WordSpec  with Matchers   {
 
         SbtDotenv.isValidLine("WITH_HASH_URL=http://example.com#awesome-id") should equal (true)
         SbtDotenv.parseLine("WITH_HASH_URL=http://example.com#awesome-id") should equal (Some("WITH_HASH_URL", "http://example.com#awesome-id"))
-      }
-
-      "Provide a SBT CLI warning if file contents invalid" in {
-
-      }
-
-      "Fail gracefully if .env file invalid" in {
-
       }
     }
 }
