@@ -1,6 +1,3 @@
-import bintray.AttrMap
-import bintray._
-
 sbtPlugin := true
 
 name := "sbt-dotenv"
@@ -10,7 +7,7 @@ description := "An SBT Plugin to load environment variables from .env into the J
 organization := "au.com.onegeek"
 
 libraryDependencies ++= Seq(
-    "net.java.dev.jna" % "jna" % "4.1.0",
+    "net.java.dev.jna" % "jna" % "4.4.0",
     "org.scalatest" %% "scalatest" % "2.1.0" % "test"
 )
 
@@ -24,12 +21,7 @@ scalaVersion := "2.10.6"
 
 version := "1.1.38-SNAPSHOT"
 
-publishMavenStyle := false
-
-bintrayPublishSettings
-
-bintray.Keys.repository in bintray.Keys.bintray := "sbt-plugins"
-
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
-
-bintray.Keys.bintrayOrganization in bintray.Keys.bintray := None
+publishMavenStyle := false
+bintrayRepository in bintray := "sbt-plugins"
+bintrayOrganization in bintray := None
