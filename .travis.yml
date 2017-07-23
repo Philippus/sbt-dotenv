@@ -10,3 +10,7 @@ env:
   matrix:
     - SBT_CMD="scripted check-load-dot-env"
     - SBT_CMD="scripted check-skip-invalid-lines
+
+script:
+  # It doesn't need that much memory because compile and run are forked
+  - sbt -J-XX:ReservedCodeCacheSize=128m -J-Xmx800M -J-Xms800M -J-server "$SBT_CMD"
