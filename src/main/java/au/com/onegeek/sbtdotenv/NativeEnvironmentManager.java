@@ -39,7 +39,7 @@ public abstract class NativeEnvironmentManager {
         public void setEnv(String name, String value) {
             String s = name + "=";
             if(value != null)
-                name += value;
+                s += value;
 
             if(libc._putenv(s) != 0)
                 throw new EnvironmentException(name);
