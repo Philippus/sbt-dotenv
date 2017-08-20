@@ -8,7 +8,7 @@ SBT dotenv is intended to be used in development.
 
 [![Build Status](https://travis-ci.org/mefellows/sbt-dotenv.svg?branch=master)](https://travis-ci.org/mefellows/sbt-dotenv)
 
-##Installation
+## Installation
 
 Add the following to your sbt `project/plugins.sbt` file:
 
@@ -27,7 +27,7 @@ addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.1.36")
 
 That's it - as soon as you start using SBT the environment is prepared.
 
-##Usage
+## Usage
 
 Create a .env file in the root of your project with some environment specific settings. For example, you might want to set a Mongo DB port to 17017 if it's installed by Homebrew.
 
