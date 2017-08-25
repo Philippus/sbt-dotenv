@@ -45,7 +45,7 @@ object SbtDotenv extends AutoPlugin {
 
   // Automatically configure environment on load
   override lazy val buildSettings = Seq(
-    onLoad in Global ~= (dotEnv compose _)
+    onLoad in Global := dotEnv compose (onLoad in Global).value
   )
 
   /**
@@ -68,12 +68,11 @@ object SbtDotenv extends AutoPlugin {
       NativeEnvironmentManager.setEnv(environment.asJava)
       DirtyEnvironmentHack.setEnv((sys.env ++ environment).asJava)
       state.log.info("Configured .env environment")
-    }.getOrElse({
-        state.log.debug(s".env file not found, no .env environment configured.")
-        state
-      }
-    )
-    state
+      state
+    } getOrElse {
+      state.log.debug(s".env file not found, no .env environment configured.")
+      state
+    }
   }
 
   /**
@@ -88,11 +87,9 @@ object SbtDotenv extends AutoPlugin {
     }
     else {
       val source = Source.fromFile(file)
-      val result = source.getLines().filter(isValidLine(_)).foldLeft(Map[String, String]())((env, line) => {
-        parseLine(line) match {
-          case Some(e) => env + (e._1 -> e._2)
-        }
-      })
+      val result = source.getLines.foldLeft(Map.empty[String, String]) { (env, line) =>
+        parseLine(line).map { env + _ } getOrElse env
+      }
       source.close
       Some(result)
     }
@@ -107,12 +104,11 @@ object SbtDotenv extends AutoPlugin {
    * @return
    */
   def parseLine(line: String): Option[(String, String)] = {
-    isValidLine(line) match {
-      case true => {
-        val splitted = line.split("=", 2)
-        Some(splitted(0) -> splitted(1).split(" #")(0).trim)
-      }
-      case false => None
+    if (isValidLine(line)) {
+      val splitted = line.split("=", 2)
+      Some(splitted(0) -> splitted(1).split(" #")(0).trim)
+    } else {
+      None
     }
   }
 }
