@@ -1,22 +1,35 @@
 dist: trusty
 language: scala
-scala:
-- 2.10.3
-jdk:
-- oraclejdk8
-- oraclejdk7
-- openjdk7
+
+# Use container-based infrastructure
+sudo: false
+
 env:
   global:
-  - secure: glhEB9krKsLbmcoQ5l6uDPGX+WWYThNwK24eUFkqutnum2avk98Z3e5sXtldDR386E1GSaDZYzWE8rv0AF9Xdqz4MvnZ/ZK11DtUfvWt9Vrd/NhsV081Mks3iJsyq9rqxk0byazUCuosuCnRTr4jzSE5LrGp2w7Fe1C/yKETYTc=
-  - secure: LSz3qTRwykG5moCbWZoDH0eDu4EKEg89N3imxdGJfSrsX/iFpVKtFWfhk78vqBnJYj34H8jfNsm7v4ar8r4QFAXUGVrwAIBDcHuTDVphYBqwLdeImINb9gmUefOwg8z3aFqjkrnxts3U01K4Iuk1R5V6zTsBv5bXIp55/squ1oA=
+    - secure: glhEB9krKsLbmcoQ5l6uDPGX+WWYThNwK24eUFkqutnum2avk98Z3e5sXtldDR386E1GSaDZYzWE8rv0AF9Xdqz4MvnZ/ZK11DtUfvWt9Vrd/NhsV081Mks3iJsyq9rqxk0byazUCuosuCnRTr4jzSE5LrGp2w7Fe1C/yKETYTc=
+    - secure: LSz3qTRwykG5moCbWZoDH0eDu4EKEg89N3imxdGJfSrsX/iFpVKtFWfhk78vqBnJYj34H8jfNsm7v4ar8r4QFAXUGVrwAIBDcHuTDVphYBqwLdeImINb9gmUefOwg8z3aFqjkrnxts3U01K4Iuk1R5V6zTsBv5bXIp55/squ1oA=
+
+matrix:
+  include:
+    - env: SBT_VERSION=1.0.0
+      jdk: oraclejdk8
+    - env: SBT_VERSION=0.13.16
+      jdk: oraclejdk7
 
 script:
-  - sbt clean test scripted
+  - sbt ^^$SBT_VERSION clean test scripted
+  # Tricks to avoid unnecessary cache updates
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
 
-after_success:
-  - >
-      test "${TRAVIS_PULL_REQUEST}" = 'false' &&
-      test "${TRAVIS_JDK_VERSION}" = 'oraclejdk7' &&
-      sh "$TRAVIS_BUILD_DIR/.travis.credentials.sh" &&
-      sbt 'set version := version.value.replace("-SNAPSHOT", "") + "." + System.getenv("TRAVIS_BUILD_NUMBER")' publish
+deploy:
+  provider: script
+  script: sbt 'set version := version.value.replace("-SNAPSHOT", "") + "." + System.getenv("TRAVIS_BUILD_NUMBER")' ^^$SBT_VERSION publish
+  on:
+    branch: master
+
+# These directories are cached to S3 at the end of the build
+cache:
+  directories:
+    - $HOME/.ivy2/cache/
+    - $HOME/.sbt/boot/
