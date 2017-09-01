@@ -1,10 +1,12 @@
+# sbt-dotenv
+
 SBT Plugin to load environment variables from .env into the JVM System Environment for local development.
 
 Storing configuration in the environment is one of the tenets of a [twelve-factor app](http://www.12factor.net/). Anything that is likely to change between deployment environments–such as resource handles for databases or credentials for external services–should be extracted from the code into environment variables.
 
-But it is not always practical to set environment variables on development machines or continuous integration servers where multiple projects are run. SBT dotenv loads variables from a .env file into ENV when the environment is bootstrapped.
+But it is not always practical to set environment variables on development machines or continuous integration servers where multiple projects are run. sbt-dotenv loads variables from a .env file into ENV when the environment is bootstrapped.
 
-SBT dotenv is intended to be used in development.
+sbt-dotenv is intended to be used in development.
 
 [![Build Status](https://travis-ci.org/mefellows/sbt-dotenv.svg?branch=master)](https://travis-ci.org/mefellows/sbt-dotenv)
 
