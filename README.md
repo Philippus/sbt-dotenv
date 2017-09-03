@@ -16,7 +16,7 @@ sbt-dotenv is intended to be used in development.
 
 Add the following to your sbt `project/plugins.sbt` file:
 
-    addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.1.37")
+    addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.2.58")
 
 That's it - as soon as you start using sbt the environment is prepared.
 
