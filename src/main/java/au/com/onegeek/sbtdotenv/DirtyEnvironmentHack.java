@@ -41,10 +41,12 @@ public class DirtyEnvironmentHack {
             Class<?> processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment");
             Field theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment");
             theEnvironmentField.setAccessible(true);
+            @SuppressWarnings("unchecked")
             Map<String, String> env = (Map<String, String>) theEnvironmentField.get(null);
             env.putAll(newenv);
             Field theCaseInsensitiveEnvironmentField = processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
             theCaseInsensitiveEnvironmentField.setAccessible(true);
+            @SuppressWarnings("unchecked")
             Map<String, String> cienv = (Map<String, String>) theCaseInsensitiveEnvironmentField.get(null);
             cienv.putAll(newenv);
         }
@@ -58,6 +60,7 @@ public class DirtyEnvironmentHack {
                         Field field = cl.getDeclaredField("m");
                         field.setAccessible(true);
                         Object obj = field.get(env);
+                        @SuppressWarnings("unchecked")
                         Map<String, String> map = (Map<String, String>) obj;
                         map.clear();
                         map.putAll(newenv);
