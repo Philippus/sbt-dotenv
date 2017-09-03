@@ -45,7 +45,7 @@ public class DirtyEnvironmentHack {
             env.putAll(newenv);
             Field theCaseInsensitiveEnvironmentField = processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
             theCaseInsensitiveEnvironmentField.setAccessible(true);
-            Map<String, String> cienv = (Map<String, String>)     theCaseInsensitiveEnvironmentField.get(null);
+            Map<String, String> cienv = (Map<String, String>) theCaseInsensitiveEnvironmentField.get(null);
             cienv.putAll(newenv);
         }
         catch (NoSuchFieldException e)
@@ -53,8 +53,8 @@ public class DirtyEnvironmentHack {
             try {
                 Class[] classes = Collections.class.getDeclaredClasses();
                 Map<String, String> env = System.getenv();
-                for(Class cl : classes) {
-                    if("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
+                for (Class cl : classes) {
+                    if ("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
                         Field field = cl.getDeclaredField("m");
                         field.setAccessible(true);
                         Object obj = field.get(env);

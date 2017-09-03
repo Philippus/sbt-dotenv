@@ -13,7 +13,6 @@ import com.sun.jna.Platform;
  *
  * Created by mfellows on 20/07/2014.
  */
-
 public abstract class NativeEnvironmentManager {
     public abstract void setEnv(String key, String value);
 
@@ -26,7 +25,7 @@ public abstract class NativeEnvironmentManager {
     static class WindowsNativeEnvironmentManagerImpl extends NativeEnvironmentManager {
         public interface WindowsEnvironmentLibC extends Library {
             WindowsEnvironmentLibC INSTANCE = (
-                (WindowsEnvironmentLibC)Native.loadLibrary("msvcrt",
+                (WindowsEnvironmentLibC) Native.loadLibrary("msvcrt",
                     WindowsEnvironmentLibC.class)
             );
 
@@ -38,10 +37,10 @@ public abstract class NativeEnvironmentManager {
         @Override
         public void setEnv(String name, String value) {
             String s = name + "=";
-            if(value != null)
+            if (value != null)
                 s += value;
 
-            if(libc._putenv(s) != 0)
+            if (libc._putenv(s) != 0)
                 throw new EnvironmentException(name);
         }
     }
@@ -67,15 +66,15 @@ public abstract class NativeEnvironmentManager {
             else
                 result = libc.unsetenv(name);
 
-            if(result != 0)
+            if (result != 0)
                 throw new EnvironmentException(name);
         }
     }
 
     private static NativeEnvironmentManager instance = null;
     private static NativeEnvironmentManager getInstance() {
-        if(instance == null) {
-            if(Platform.isWindows())
+        if (instance == null) {
+            if (Platform.isWindows())
                 instance = new WindowsNativeEnvironmentManagerImpl();
             else
                 instance = new PosixNativeEnvironmentManagerImpl();
@@ -86,7 +85,7 @@ public abstract class NativeEnvironmentManager {
 
     public static void setEnv(Map<String, String> env) {
         NativeEnvironmentManager envManager = NativeEnvironmentManager.getInstance();
-        for(Map.Entry<String, String> entry : env.entrySet()) {
+        for (Map.Entry<String, String> entry : env.entrySet()) {
             envManager.setEnv(entry.getKey(), entry.getValue());
         }
     }
