@@ -9,7 +9,7 @@ scalaVersion := "2.12.3"
 
 libraryDependencies ++= Seq(
     "net.java.dev.jna" % "jna" % "4.4.0",
-    "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+    "org.scalatest" %% "scalatest" % "3.0.3" % Test
 )
 
 scriptedLaunchOpts := { scriptedLaunchOpts.value ++
@@ -19,8 +19,7 @@ scriptedBufferLog := false
 
 publishMavenStyle := false
 
+bintrayOrganization := None
 bintrayRepository := "sbt-plugins"
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
-
-bintrayOrganization := None
