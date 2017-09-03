@@ -28,7 +28,7 @@ import sbt._
 import scala.io.Source
 
 /**
- * SBT dotenv - a dotenv (https://github.com/bkeepers/dotenv) implementation for Scala SBT.
+ * sbt-dotenv - a dotenv (https://github.com/bkeepers/dotenv) implementation for Scala sbt.
  *
  * Reads a file
  *
@@ -49,7 +49,7 @@ object SbtDotenv extends AutoPlugin {
   )
 
   /**
-   * Configures the SBT environment from a dotfile (.env) if one exists.
+   * Configures the sbt environment from a dotfile (.env) if one exists.
    *
    * @param state
    * @return

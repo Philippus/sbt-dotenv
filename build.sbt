@@ -3,7 +3,7 @@ sbtPlugin := true
 name := "sbt-dotenv"
 organization := "au.com.onegeek"
 
-description := "An SBT Plugin to load environment variables from .env into the JVM System Environment for local development. Assists with 'Twelve Factor App' development principle 3 'Store config in the environment'."
+description := "An sbt plugin to load environment variables from .env into the JVM System Environment for local development. Assists with 'Twelve Factor App' development principle 3 'Store config in the environment'."
 
 scalaVersion := "2.12.3"
 

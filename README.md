@@ -1,31 +1,24 @@
-SBT Plugin to load environment variables from .env into the JVM System Environment for local development.
+# sbt-dotenv
+
+[![Build Status](https://travis-ci.org/mefellows/sbt-dotenv.svg?branch=master)](https://travis-ci.org/mefellows/sbt-dotenv)
+![Current Version](https://img.shields.io/badge/version-1.1.37-brightgreen.svg?style=flat "1.1.37")
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat "MIT")](LICENSE)
+
+sbt plugin to load environment variables from .env into the JVM System Environment for local development.
 
 Storing configuration in the environment is one of the tenets of a [twelve-factor app](http://www.12factor.net/). Anything that is likely to change between deployment environments–such as resource handles for databases or credentials for external services–should be extracted from the code into environment variables.
 
-But it is not always practical to set environment variables on development machines or continuous integration servers where multiple projects are run. SBT dotenv loads variables from a .env file into ENV when the environment is bootstrapped.
+But it is not always practical to set environment variables on development machines or continuous integration servers where multiple projects are run. sbt-dotenv loads variables from a .env file into ENV when the environment is bootstrapped.
 
-SBT dotenv is intended to be used in development.
-
-[![Build Status](https://travis-ci.org/mefellows/sbt-dotenv.svg?branch=master)](https://travis-ci.org/mefellows/sbt-dotenv)
+sbt-dotenv is intended to be used in development.
 
 ## Installation
 
 Add the following to your sbt `project/plugins.sbt` file:
 
-```scala
-resolvers += Resolver.url(
-  "bintray-sbt-plugin-releases",
-  url("http://dl.bintray.com/content/sbt/sbt-plugin-releases"))(
-    Resolver.ivyStylePatterns)
+    addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.1.37")
 
-addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
-
-resolvers += Classpaths.sbtPluginReleases
-
-addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.1.36")
-```
-
-That's it - as soon as you start using SBT the environment is prepared.
+That's it - as soon as you start using sbt the environment is prepared.
 
 ## Usage
 
@@ -42,9 +35,9 @@ I_BLOW_MY_NOSE=At you
 
 It is recommended that you store development-only settings in your `.env` file, and commit it to your repository. Make sure that all your credentials for your development environment are different from your other deployments. This makes it easy for other developers to get started on your project, without compromising your credentials for other environments.
 
-## SBT Version
+## sbt version
 
-Please note that this plugin takes advantage of SBT [Auto Plugins](http://www.scala-sbt.org/0.13/docs/Plugins.html) and therefore only works in SBT v0.13.5+
+Please note that this plugin takes advantage of sbt [Auto Plugins](http://www.scala-sbt.org/0.13/docs/Plugins.html) and therefore only works in sbt v0.13.5+
 
 ## Contributing
 
