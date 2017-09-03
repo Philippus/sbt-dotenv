@@ -17,14 +17,14 @@ import com.sun.jna.Platform;
 public abstract class NativeEnvironmentManager {
     public abstract void setEnv(String key, String value);
 
-    public static class EnvironmentException extends RuntimeException {
+    static class EnvironmentException extends RuntimeException {
         EnvironmentException(String key) {
             super("Failed to set environment variable: " + key);
         }
     }
 
     static class WindowsNativeEnvironmentManagerImpl extends NativeEnvironmentManager {
-        public static interface WindowsEnvironmentLibC extends Library {
+        public interface WindowsEnvironmentLibC extends Library {
             WindowsEnvironmentLibC INSTANCE = (
                 (WindowsEnvironmentLibC)Native.loadLibrary("msvcrt",
                     WindowsEnvironmentLibC.class)
@@ -47,7 +47,7 @@ public abstract class NativeEnvironmentManager {
     }
 
     static class PosixNativeEnvironmentManagerImpl extends NativeEnvironmentManager {
-        public static interface PosixEnvironmentLibC extends Library {
+        public interface PosixEnvironmentLibC extends Library {
             PosixEnvironmentLibC INSTANCE = (
                 (PosixEnvironmentLibC) Native.loadLibrary("c",
                     PosixEnvironmentLibC.class)
@@ -73,7 +73,7 @@ public abstract class NativeEnvironmentManager {
     }
 
     private static NativeEnvironmentManager instance = null;
-    public static NativeEnvironmentManager getInstance() {
+    private static NativeEnvironmentManager getInstance() {
         if(instance == null) {
             if(Platform.isWindows())
                 instance = new WindowsNativeEnvironmentManagerImpl();
