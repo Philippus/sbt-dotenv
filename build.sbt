@@ -19,8 +19,7 @@ scriptedBufferLog := false
 
 publishMavenStyle := false
 
+bintrayOrganization := None
 bintrayRepository := "sbt-plugins"
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
-
-bintrayOrganization := None
