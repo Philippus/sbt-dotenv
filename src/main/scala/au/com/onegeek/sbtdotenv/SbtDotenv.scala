@@ -81,9 +81,7 @@ object SbtDotenv extends AutoPlugin {
       None
     } else {
       val source = Source.fromFile(file)
-      val result = source.getLines.foldLeft(Map.empty[String, String]) { (env, line) =>
-        parseLine(line).map { env + _ } getOrElse env
-      }
+      val result = source.getLines.flatMap(parseLine).toMap
       source.close
       Some(result)
     }
