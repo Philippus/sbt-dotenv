@@ -25,8 +25,6 @@ package au.com.onegeek.sbtdotenv
 import java.io.File
 import org.scalatest.{ Matchers, WordSpec }
 
-import scala.io.Source
-
 /**
  * Created by mfellows on 20/07/2014.
  */
