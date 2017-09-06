@@ -57,7 +57,7 @@ object SbtDotenv extends AutoPlugin {
   def configureEnvironment(state: State): State = {
     state.log.debug(s"Base directory: ${state.configuration.baseDirectory}")
     state.log.debug(s"looking for .env file: ${state.configuration.baseDirectory}/.env")
-    val dotEnvFile: File = new File(state.configuration.baseDirectory + "/.env")
+    val dotEnvFile: File = new File(s"${state.configuration.baseDirectory}/.env")
     parseFile(dotEnvFile) match {
       case Some(environment) =>
         state.log.debug(s".env detected. About to configure JVM System Environment with new map: $environment")
