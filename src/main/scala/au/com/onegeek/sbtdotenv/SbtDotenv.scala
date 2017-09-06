@@ -40,7 +40,7 @@ object SbtDotenv extends AutoPlugin {
     val dotEnv = (s: State) => configureEnvironment(s)
   }
 
-  import au.com.onegeek.sbtdotenv.SbtDotenv.autoImport._
+  import autoImport._
 
   override def trigger = allRequirements
 
