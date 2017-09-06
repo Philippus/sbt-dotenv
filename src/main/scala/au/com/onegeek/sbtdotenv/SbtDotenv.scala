@@ -44,9 +44,8 @@ object SbtDotenv extends AutoPlugin {
   override def trigger = allRequirements
 
   // Automatically configure environment on load
-  override lazy val buildSettings = Seq(
-    onLoad in Global := dotEnv compose (onLoad in Global).value
-  )
+  override lazy val buildSettings =
+    Seq(onLoad in Global := dotEnv compose (onLoad in Global).value)
 
   /**
    * Configures the sbt environment from a dotfile (.env) if one exists.
@@ -84,8 +83,7 @@ object SbtDotenv extends AutoPlugin {
   def parseFile(file: File): Option[Map[String, String]] = {
     if (!file.exists) {
       None
-    }
-    else {
+    } else {
       val source = Source.fromFile(file)
       val result = source.getLines.foldLeft(Map.empty[String, String]) { (env, line) =>
         parseLine(line).map { env + _ } getOrElse env
