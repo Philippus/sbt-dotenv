@@ -25,6 +25,7 @@ package au.com.onegeek.sbtdotenv
 import sbt.Keys._
 import sbt._
 
+import scala.collection.JavaConverters._
 import scala.io.Source
 
 /**
@@ -54,14 +55,9 @@ object SbtDotenv extends AutoPlugin {
    * @return
    */
   def configureEnvironment(state: State): State = {
-
-    import state._
-
-    import scala.collection.JavaConverters._
-
-    state.log.debug(s"Base directory: ${configuration.baseDirectory}")
-    state.log.debug(s"looking for .env file: ${configuration.baseDirectory}/.env")
-    val dotEnvFile: File = new File(configuration.baseDirectory + "/.env")
+    state.log.debug(s"Base directory: ${state.configuration.baseDirectory}")
+    state.log.debug(s"looking for .env file: ${state.configuration.baseDirectory}/.env")
+    val dotEnvFile: File = new File(state.configuration.baseDirectory + "/.env")
     parseFile(dotEnvFile).map { environment =>
       state.log.debug(s".env detected. About to configure JVM System Environment with new map: $environment")
       NativeEnvironmentManager.setEnv(environment.asJava)
