@@ -13,20 +13,19 @@ import com.sun.jna.Platform;
  *
  * Created by mfellows on 20/07/2014.
  */
-
 public abstract class NativeEnvironmentManager {
     public abstract void setEnv(String key, String value);
 
-    public static class EnvironmentException extends RuntimeException {
+    static class EnvironmentException extends RuntimeException {
         EnvironmentException(String key) {
             super("Failed to set environment variable: " + key);
         }
     }
 
     static class WindowsNativeEnvironmentManagerImpl extends NativeEnvironmentManager {
-        public static interface WindowsEnvironmentLibC extends Library {
+        public interface WindowsEnvironmentLibC extends Library {
             WindowsEnvironmentLibC INSTANCE = (
-                (WindowsEnvironmentLibC)Native.loadLibrary("msvcrt",
+                (WindowsEnvironmentLibC) Native.loadLibrary("msvcrt",
                     WindowsEnvironmentLibC.class)
             );
 
@@ -38,16 +37,16 @@ public abstract class NativeEnvironmentManager {
         @Override
         public void setEnv(String name, String value) {
             String s = name + "=";
-            if(value != null)
+            if (value != null)
                 s += value;
 
-            if(libc._putenv(s) != 0)
+            if (libc._putenv(s) != 0)
                 throw new EnvironmentException(name);
         }
     }
 
     static class PosixNativeEnvironmentManagerImpl extends NativeEnvironmentManager {
-        public static interface PosixEnvironmentLibC extends Library {
+        public interface PosixEnvironmentLibC extends Library {
             PosixEnvironmentLibC INSTANCE = (
                 (PosixEnvironmentLibC) Native.loadLibrary("c",
                     PosixEnvironmentLibC.class)
@@ -67,15 +66,15 @@ public abstract class NativeEnvironmentManager {
             else
                 result = libc.unsetenv(name);
 
-            if(result != 0)
+            if (result != 0)
                 throw new EnvironmentException(name);
         }
     }
 
     private static NativeEnvironmentManager instance = null;
-    public static NativeEnvironmentManager getInstance() {
-        if(instance == null) {
-            if(Platform.isWindows())
+    private static NativeEnvironmentManager getInstance() {
+        if (instance == null) {
+            if (Platform.isWindows())
                 instance = new WindowsNativeEnvironmentManagerImpl();
             else
                 instance = new PosixNativeEnvironmentManagerImpl();
@@ -86,7 +85,7 @@ public abstract class NativeEnvironmentManager {
 
     public static void setEnv(Map<String, String> env) {
         NativeEnvironmentManager envManager = NativeEnvironmentManager.getInstance();
-        for(Map.Entry<String, String> entry : env.entrySet()) {
+        for (Map.Entry<String, String> entry : env.entrySet()) {
             envManager.setEnv(entry.getKey(), entry.getValue());
         }
     }
