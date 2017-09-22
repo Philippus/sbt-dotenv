@@ -25,6 +25,7 @@ package au.com.onegeek.sbtdotenv
 import sbt.Keys._
 import sbt._
 
+import scala.collection.JavaConverters._
 import scala.io.Source
 
 /**
@@ -39,14 +40,13 @@ object SbtDotenv extends AutoPlugin {
     val dotEnv = (s: State) => configureEnvironment(s)
   }
 
-  import au.com.onegeek.sbtdotenv.SbtDotenv.autoImport._
+  import autoImport._
 
   override def trigger = allRequirements
 
   // Automatically configure environment on load
-  override lazy val buildSettings = Seq(
-    onLoad in Global := dotEnv compose (onLoad in Global).value
-  )
+  override lazy val buildSettings =
+    Seq(onLoad in Global := dotEnv compose (onLoad in Global).value)
 
   /**
    * Configures the sbt environment from a dotfile (.env) if one exists.
@@ -55,24 +55,19 @@ object SbtDotenv extends AutoPlugin {
    * @return
    */
   def configureEnvironment(state: State): State = {
-
-    import state._
-
-    import scala.collection.JavaConverters._
-
-    state.log.debug(s"Base directory: ${configuration.baseDirectory}")
-    state.log.debug(s"looking for .env file: ${configuration.baseDirectory}/.env")
-    val dotEnvFile: File = new File(configuration.baseDirectory + "/.env")
-    parseFile(dotEnvFile).map { environment =>
-      state.log.debug(s".env detected. About to configure JVM System Environment with new map: $environment")
-      NativeEnvironmentManager.setEnv(environment.asJava)
-      DirtyEnvironmentHack.setEnv((sys.env ++ environment).asJava)
-      state.log.info("Configured .env environment")
-      state
-    } getOrElse {
-      state.log.debug(s".env file not found, no .env environment configured.")
-      state
+    state.log.debug(s"Base directory: ${state.configuration.baseDirectory}")
+    state.log.debug(s"looking for .env file: ${state.configuration.baseDirectory}/.env")
+    val dotEnvFile: File = new File(s"${state.configuration.baseDirectory}/.env")
+    parseFile(dotEnvFile) match {
+      case Some(environment) =>
+        state.log.debug(s".env detected. About to configure JVM System Environment with new map: $environment")
+        NativeEnvironmentManager.setEnv(environment.asJava)
+        DirtyEnvironmentHack.setEnv((sys.env ++ environment).asJava)
+        state.log.info("Configured .env environment")
+      case None =>
+        state.log.debug(s".env file not found, no .env environment configured.")
     }
+    state
   }
 
   /**
@@ -84,12 +79,9 @@ object SbtDotenv extends AutoPlugin {
   def parseFile(file: File): Option[Map[String, String]] = {
     if (!file.exists) {
       None
-    }
-    else {
+    } else {
       val source = Source.fromFile(file)
-      val result = source.getLines.foldLeft(Map.empty[String, String]) { (env, line) =>
-        parseLine(line).map { env + _ } getOrElse env
-      }
+      val result = source.getLines.flatMap(parseLine).toMap
       source.close
       Some(result)
     }
