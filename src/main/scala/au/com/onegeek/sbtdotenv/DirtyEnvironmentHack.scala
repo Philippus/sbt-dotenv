@@ -38,12 +38,12 @@ object DirtyEnvironmentHack {
 
       val theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment")
       theEnvironmentField.setAccessible(true)
-      val env = theEnvironmentField.get(null).asInstanceOf[java.util.Map[String, String]]
+      val env = theEnvironmentField.get(null).asInstanceOf[java.util.Map[String, String]] // scalastyle:off null
       env.putAll(newEnv)
 
       val theCaseInsensitiveEnvironmentField = processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment")
       theCaseInsensitiveEnvironmentField.setAccessible(true)
-      val ciEnv = theCaseInsensitiveEnvironmentField.get(null).asInstanceOf[java.util.Map[String, String]]
+      val ciEnv = theCaseInsensitiveEnvironmentField.get(null).asInstanceOf[java.util.Map[String, String]] // scalastyle:off null
       ciEnv.putAll(newEnv)
     } catch {
       case _: NoSuchFieldException =>
