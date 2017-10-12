@@ -23,6 +23,7 @@
 package au.com.onegeek.sbtdotenv
 
 import java.util.Collections
+import scala.util.control.NonFatal
 
 /**
  * Rewrite the runtime Environment, embedding entries from the .env file.
@@ -58,10 +59,10 @@ object DirtyEnvironmentHack {
             map.putAll(newEnv)
           })
         } catch {
-          case e2: Exception =>
+          case NonFatal(e2) =>
             e2.printStackTrace()
         }
-      case e1: Exception =>
+      case NonFatal(e1) =>
         e1.printStackTrace()
     }
   }
