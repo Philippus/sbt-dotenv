@@ -23,6 +23,7 @@
 package au.com.onegeek.sbtdotenv
 
 import java.util.Collections
+import scala.util.{ Failure, Success, Try }
 import scala.util.control.NonFatal
 
 /**
@@ -34,7 +35,7 @@ import scala.util.control.NonFatal
  */
 object DirtyEnvironmentHack {
   def setEnv(newEnv: java.util.Map[String, String]): Unit = {
-    try {
+    Try({
       val processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment")
 
       val theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment")
@@ -46,9 +47,9 @@ object DirtyEnvironmentHack {
       theCaseInsensitiveEnvironmentField.setAccessible(true)
       val ciEnv = theCaseInsensitiveEnvironmentField.get(null).asInstanceOf[java.util.Map[String, String]] // scalastyle:off null
       ciEnv.putAll(newEnv)
-    } catch {
-      case _: NoSuchFieldException =>
-        try {
+    }) match {
+      case Failure(_: NoSuchFieldException) =>
+        Try({
           val classes = classOf[Collections].getDeclaredClasses
           val env = System.getenv
           classes.filter(_.getName == "java.util.Collections$UnmodifiableMap").foreach(cl => {
@@ -58,12 +59,14 @@ object DirtyEnvironmentHack {
             map.clear()
             map.putAll(newEnv)
           })
-        } catch {
-          case NonFatal(e2) =>
+        }) match {
+          case Failure(NonFatal(e2)) =>
             e2.printStackTrace()
+          case Success(_) =>
         }
-      case NonFatal(e1) =>
+      case Failure(NonFatal(e1)) =>
         e1.printStackTrace()
+      case Success(_) =>
     }
   }
 }
