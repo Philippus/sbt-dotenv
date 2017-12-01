@@ -5,7 +5,7 @@ organization := "au.com.onegeek"
 
 description := "An sbt plugin to load environment variables from .env into the JVM System Environment for local development. Assists with 'Twelve Factor App' development principle 3 'Store config in the environment'."
 
-scalaVersion := "2.12.3"
+scalaVersion := "2.12.4"
 
 libraryDependencies ++= Seq(
     "net.java.dev.jna" % "jna" % "4.5.0",
