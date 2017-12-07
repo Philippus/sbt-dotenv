@@ -1,7 +1,7 @@
 # sbt-dotenv
 
 [![Build Status](https://travis-ci.org/mefellows/sbt-dotenv.svg?branch=master)](https://travis-ci.org/mefellows/sbt-dotenv)
-![Current Version](https://img.shields.io/badge/version-1.1.37-brightgreen.svg?style=flat "1.1.37")
+![Current Version](https://img.shields.io/badge/version-1.2.88-brightgreen.svg?style=flat "1.2.88")
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat "MIT")](LICENSE)
 
 sbt plugin to load environment variables from .env into the JVM System Environment for local development.
@@ -16,7 +16,7 @@ sbt-dotenv is intended to be used in development.
 
 Add the following to your sbt `project/plugins.sbt` file:
 
-    addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.2.58")
+    addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.2.88")
 
 That's it - as soon as you start using sbt the environment is prepared.
 
