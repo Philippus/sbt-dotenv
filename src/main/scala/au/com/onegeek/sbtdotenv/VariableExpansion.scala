@@ -23,6 +23,7 @@
 package au.com.onegeek.sbtdotenv
 
 import java.util.regex.Matcher
+import scala.annotation.tailrec
 import scala.util.matching.Regex
 
 object VariableExpansion {
@@ -38,9 +39,11 @@ object VariableExpansion {
   def expandAllVars(defns: Env, vars: Env): Env =
     expandAllVarsNTimes(defns, vars, vars, 3)
 
+  @tailrec
   private def expandAllVarsNTimes(defns: Env, vars: Env, originals: Env, n: Int): Env =
-    if (n <= 0) escapeAndRestoreFailedOriginals(vars, originals)
-    else {
+    if (n <= 0) {
+      escapeAndRestoreFailedOriginals(vars, originals)
+    } else {
       val reduced = expandAllVarsOnce(defns, vars)
       expandAllVarsNTimes(defns ++ reduced, reduced, originals, n - 1)
     }
@@ -66,7 +69,12 @@ object VariableExpansion {
   //   $ and any non-boundary chars (_ is ok), reluctantly so the first \b stops or
   //   $ and {} pair containing at least one character of anything but }
   //
-  private val variableRegex: Regex = "(?<=^|[^$])(?:\\$([^{\\$]+?)\\b|\\$\\{([^\\}\\$]+)\\})".r
+  private val variableRegex: Regex = {
+    val start = "(?<=^|[^$])"
+    val braceless = "\\$([^{\\$]+?)\\b"
+    val braces = "\\$\\{([^\\}\\$]+)\\}"
+    s"$start(?:$braceless|$braces)".r
+  }
 
   private def variableName(m: Regex.Match) = Option(m.group(1)).getOrElse(m.group(2))
 
