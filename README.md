@@ -28,8 +28,11 @@ vi .env
 
 ```
 MONGO_PORT=17017
-I_BLOW_MY_NOSE=At you
+WHO=you
+I_BLOW_MY_NOSE=At $WHO
 ```
+
+Variable expansion of the form `$FOO` and `${FOO}` is supported based on the values in `.env` or the system environment.
 
 ## Should I commit my .env file?
 

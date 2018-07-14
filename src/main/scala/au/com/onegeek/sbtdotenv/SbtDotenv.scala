@@ -61,8 +61,9 @@ object SbtDotenv extends AutoPlugin {
     parseFile(dotEnvFile) match {
       case Some(environment) =>
         state.log.debug(s".env detected. About to configure JVM System Environment with new map: $environment")
-        NativeEnvironmentManager.setEnv(environment.asJava)
-        DirtyEnvironmentHack.setEnv((sys.env ++ environment).asJava)
+        val expandedEnvironment = VariableExpansion.expandAllVars(sys.env ++ environment, environment)
+        NativeEnvironmentManager.setEnv(expandedEnvironment.asJava)
+        DirtyEnvironmentHack.setEnv((sys.env ++ expandedEnvironment).asJava)
         state.log.info("Configured .env environment")
       case None =>
         state.log.debug(s".env file not found, no .env environment configured.")
