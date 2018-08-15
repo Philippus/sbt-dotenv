@@ -90,11 +90,11 @@ object SbtDotenv extends AutoPlugin {
 
   private val LINE_REGEX =
     """(?x)
-       ^                         # start of line
+       (?:^|\A)                  # start of line
        ([a-zA-Z_]+[a-zA-Z0-9_]*) # variable name
-       =                         # assignment
+       (?:\s*=\s*?)              # assignment with whitespace
        (.*)                      # variable value
-       $                         # end of line
+       (?:$|\z)                  # end of line
     """.r
 
   /**

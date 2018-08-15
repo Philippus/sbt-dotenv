@@ -72,6 +72,10 @@ class SbtDotenvSpec extends WordSpec with Matchers {
       SbtDotenv.parseLine("FOO='a=b==ccddd'") should equal(Some("FOO", "'a=b==ccddd'"))
     }
 
+    "accept lines with whitespace around assignment operator" in {
+      SbtDotenv.parseLine("FOO   =   boo") should equal(Some("FOO", "boo"))
+    }
+
     "validate correct lines in a .env file" in {
       SbtDotenv.parseLine("FOO=bar") should equal(Some("FOO", "bar"))
 
