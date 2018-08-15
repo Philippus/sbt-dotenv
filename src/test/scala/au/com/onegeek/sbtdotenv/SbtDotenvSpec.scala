@@ -45,51 +45,40 @@ class SbtDotenvSpec extends WordSpec with Matchers {
     }
 
     "not accept empty lines" in {
-      SbtDotenv.isValidLine("") should equal(false)
       SbtDotenv.parseLine("") should equal(None)
     }
 
     "not accept numeric variable names" in {
-      SbtDotenv.isValidLine("1234=5678") should equal(false)
       SbtDotenv.parseLine("1234=5678") should equal(None)
     }
 
     "not accept lines with no assignment" in {
-      SbtDotenv.isValidLine("F") should equal(false)
       SbtDotenv.parseLine("F") should equal(None)
     }
 
     "accept unquoted strings containing whitespace" in {
-      SbtDotenv.isValidLine("SOMETHING_TOKEN=I love kittens") should equal(true)
       SbtDotenv.parseLine("SOMETHING=I love kittens") should equal(Some("SOMETHING", "I love kittens"))
     }
 
     "accept lines with trailing comments" in {
-      SbtDotenv.isValidLine("WITHOUT_COMMENT=ThisIsValue # here is a comment") should equal(true)
       SbtDotenv.parseLine("WITHOUT_COMMENT=ThisIsValue # here is a comment") should equal(Some("WITHOUT_COMMENT", "ThisIsValue"))
     }
 
     "accept lines with URLs containing # characters" in {
-      SbtDotenv.isValidLine("WITH_HASH_URL=http://example.com#awesome-id") should equal(true)
       SbtDotenv.parseLine("WITH_HASH_URL=http://example.com#awesome-id") should equal(Some("WITH_HASH_URL", "http://example.com#awesome-id"))
     }
 
     "accept lines with quoted variables" in {
-      SbtDotenv.isValidLine("FOO='a=b==ccddd'") should equal(true)
       SbtDotenv.parseLine("FOO='a=b==ccddd'") should equal(Some("FOO", "'a=b==ccddd'"))
     }
 
     "validate correct lines in a .env file" in {
-      SbtDotenv.isValidLine("FOO=bar") should equal(true)
       SbtDotenv.parseLine("FOO=bar") should equal(Some("FOO", "bar"))
 
-      SbtDotenv.isValidLine("FOO=1234") should equal(true)
       SbtDotenv.parseLine("FOO=1234") should equal(Some("FOO", "1234"))
 
-      SbtDotenv.isValidLine("F.OO=bar") should equal(false)
       SbtDotenv.parseLine("F.OO=bar") should equal(None)
 
-      SbtDotenv.isValidLine("COVERALLS_REPO_TOKEN=NTHnTHSNthnTHSntNt09aoesNTH6") should equal(true)
       SbtDotenv.parseLine("COVERALLS_REPO_TOKEN=NTHnTHSNthnTHSntNt09aoesNTH6") should equal(Some("COVERALLS_REPO_TOKEN", "NTHnTHSNthnTHSntNt09aoesNTH6"))
     }
   }

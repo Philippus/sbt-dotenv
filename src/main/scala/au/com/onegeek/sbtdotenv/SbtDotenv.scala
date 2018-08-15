@@ -88,7 +88,7 @@ object SbtDotenv extends AutoPlugin {
     }
   }
 
-  def isValidLine(line: String): Boolean = line.matches("^[a-zA-Z_]+[a-zA-Z0-9_]*=.*")
+  private def isValidLine(line: String): Boolean = line.matches("^[a-zA-Z_]+[a-zA-Z0-9_]*=.*")
 
   /**
    * Extract k/v pairs from each line as an environment Key -> Value.
