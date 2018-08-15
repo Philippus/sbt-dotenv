@@ -82,14 +82,14 @@ object SbtDotenv extends AutoPlugin {
       None
     } else {
       val source = Source.fromFile(file)
-      val result = source.getLines.flatMap(parseLine).toMap
+      val result = parse(source)
       source.close
       Some(result)
     }
   }
 
   private val LINE_REGEX =
-    """(?x)
+    """(?xms)
        (?:^|\A)                  # start of line
        \s*                       # leading whitespace
        (?:export\s+)?            # export (optional)
@@ -103,24 +103,18 @@ object SbtDotenv extends AutoPlugin {
          [^\#\r\n]+                # unquoted variable
        )                         # end variable value (captured)
        \s*                       # trailing whitespace
-       (?:\#.*)?                 # trialing comment (optional)
+       (?:                       # start trailing comment (optional)
+         \#                        # begin comment
+         (?:(?!$).)*               # any character up to end-of-line
+       )?                        # end trailing comment (optional)
        (?:$|\z)                  # end of line
     """.r
 
-  /**
-   * Extract k/v pairs from each line as an environment Key -> Value.
-   *
-   * @param line A line of text to convert into a Tuple2
-   * @return
-   */
-  def parseLine(line: String): Option[(String, String)] = {
-    line match {
-      case LINE_REGEX(key, value) =>
-        Some(key -> unescapeCharacters(removeQuotes(value)))
-      case _ =>
-        None
-    }
-  }
+  def parse(source: Source): Map[String, String] = parse(source.mkString)
+
+  def parse(source: String): Map[String, String] = LINE_REGEX.findAllMatchIn(source)
+      .map(keyValue => (keyValue.group(1), unescapeCharacters(removeQuotes(keyValue.group(2)))))
+      .toMap
 
   private def removeQuotes(value: String): String = {
     value.trim match {

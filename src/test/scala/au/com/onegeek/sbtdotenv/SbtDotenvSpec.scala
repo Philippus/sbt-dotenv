@@ -38,65 +38,79 @@ class SbtDotenvSpec extends WordSpec with Matchers {
 
     "read .env file into an environment Map" in {
       val file = new File("./src/test/resources/.dotenv.valid")
-      val map = SbtDotenv.parseFile(file)
 
-      map.get("MONGO_PORT") should equal("17017")
-      map.get("COVERALLS_REPO_TOKEN") should equal("aoeucaPDc2rvkFugUGlNaCGu3EOeoaeu63WLo5")
+      SbtDotenv.parseFile(file) should equal(Some(Map(
+        "MONGO_PORT" -> "17017",
+        "COVERALLS_REPO_TOKEN" -> "aoeucaPDc2rvkFugUGlNaCGu3EOeoaeu63WLo5",
+        "MONGO_URL" -> "http://localhost:$MONGO_PORT/mongo#asdf"
+      )))
     }
 
     "not accept empty lines" in {
-      SbtDotenv.parseLine("") should equal(None)
+      SbtDotenv.parse("") should equal(Map())
     }
 
     "not accept numeric variable names" in {
-      SbtDotenv.parseLine("1234=5678") should equal(None)
+      SbtDotenv.parse("1234=5678") should equal(Map())
     }
 
     "not accept lines with no assignment" in {
-      SbtDotenv.parseLine("F") should equal(None)
+      SbtDotenv.parse("F") should equal(Map())
     }
 
     "accept unquoted strings containing whitespace" in {
-      SbtDotenv.parseLine("SOMETHING=I love kittens") should equal(Some("SOMETHING", "I love kittens"))
+      SbtDotenv.parse("SOMETHING=I love kittens") should equal(Map("SOMETHING" -> "I love kittens"))
     }
 
     "accept lines with trailing comments" in {
-      SbtDotenv.parseLine("WITHOUT_COMMENT=ThisIsValue # here is a comment") should equal(Some("WITHOUT_COMMENT", "ThisIsValue"))
+      SbtDotenv.parse("WITHOUT_COMMENT=ThisIsValue # here is a comment") should equal(Map("WITHOUT_COMMENT" -> "ThisIsValue"))
     }
 
     "accept lines with URLs containing # characters" in {
-      SbtDotenv.parseLine("WITH_HASH_URL='http://example.com#awesome-id'") should equal(Some("WITH_HASH_URL", "http://example.com#awesome-id"))
+      SbtDotenv.parse("WITH_HASH_URL='http://example.com#awesome-id'") should equal(Map("WITH_HASH_URL" -> "http://example.com#awesome-id"))
     }
 
     "accept lines with quoted variables and strips quotes" in {
-      SbtDotenv.parseLine("FOO='a=b==ccddd'") should equal(Some("FOO", "a=b==ccddd"))
-      SbtDotenv.parseLine("FOO=\"blah # blah \r blah \n blah \"") should equal(Some("FOO", "blah # blah \r blah \n blah "))
+      SbtDotenv.parse("FOO='a=b==ccddd'") should equal(Map("FOO" -> "a=b==ccddd"))
+      SbtDotenv.parse("FOO=\"blah # blah \r blah \n blah \"") should equal(Map("FOO" -> "blah # blah \r blah \n blah "))
     }
 
     "accept lines with whitespace around assignment operator" in {
-      SbtDotenv.parseLine("FOO   =   boo") should equal(Some("FOO", "boo"))
+      SbtDotenv.parse("FOO   =   boo") should equal(Map("FOO" -> "boo"))
     }
 
     "accept lines with escaped characters and unescape them" in {
-      SbtDotenv.parseLine("FOO=' \\\' \\\' '") should equal(Some("FOO", " \' \' "))
+      SbtDotenv.parse("FOO=' \\\' \\\' '") should equal(Map("FOO" -> " \' \' "))
     }
 
     "accept lines with leading whitespace before variable name" in {
-      SbtDotenv.parseLine("   FOO=noo") should equal(Some("FOO", "noo"))
+      SbtDotenv.parse("   FOO=noo") should equal(Map("FOO" -> "noo"))
     }
 
     "accept lines with leading export and ignore the export" in {
-      SbtDotenv.parseLine(" export FOO=noo") should equal(Some("FOO", "noo"))
+      SbtDotenv.parse(" export FOO=noo") should equal(Map("FOO" -> "noo"))
+    }
+
+    "accept multi-line variables" in {
+      val content = """MY_CERT="-----BEGIN CERTIFICATE-----
+        |123456789qwertyuiopasdfghjklzxcvbnm
+        |-----END CERTIFICATE-----
+        |"
+      """.stripMargin
+      SbtDotenv.parse(content) should equal(Map("MY_CERT" -> """-----BEGIN CERTIFICATE-----
+                                                             |123456789qwertyuiopasdfghjklzxcvbnm
+                                                             |-----END CERTIFICATE-----
+                                                             |""".stripMargin))
     }
 
     "validate correct lines in a .env file" in {
-      SbtDotenv.parseLine("FOO=bar") should equal(Some("FOO", "bar"))
+      SbtDotenv.parse("FOO=bar") should equal(Map("FOO" -> "bar"))
 
-      SbtDotenv.parseLine("FOO=1234") should equal(Some("FOO", "1234"))
+      SbtDotenv.parse("FOO=1234") should equal(Map("FOO" -> "1234"))
 
-      SbtDotenv.parseLine("F.OO=bar") should equal(None)
+      SbtDotenv.parse("F.OO=bar") should equal(Map())
 
-      SbtDotenv.parseLine("COVERALLS_REPO_TOKEN=NTHnTHSNthnTHSntNt09aoesNTH6") should equal(Some("COVERALLS_REPO_TOKEN", "NTHnTHSNthnTHSntNt09aoesNTH6"))
+      SbtDotenv.parse("COVERALLS_REPO_TOKEN=NTHnTHSNthnTHSntNt09aoesNTH6") should equal(Map("COVERALLS_REPO_TOKEN" -> "NTHnTHSNthnTHSntNt09aoesNTH6"))
     }
   }
 }
