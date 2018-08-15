@@ -65,15 +65,20 @@ class SbtDotenvSpec extends WordSpec with Matchers {
     }
 
     "accept lines with URLs containing # characters" in {
-      SbtDotenv.parseLine("WITH_HASH_URL=http://example.com#awesome-id") should equal(Some("WITH_HASH_URL", "http://example.com#awesome-id"))
+      SbtDotenv.parseLine("WITH_HASH_URL='http://example.com#awesome-id'") should equal(Some("WITH_HASH_URL", "http://example.com#awesome-id"))
     }
 
-    "accept lines with quoted variables" in {
-      SbtDotenv.parseLine("FOO='a=b==ccddd'") should equal(Some("FOO", "'a=b==ccddd'"))
+    "accept lines with quoted variables and strips quotes" in {
+      SbtDotenv.parseLine("FOO='a=b==ccddd'") should equal(Some("FOO", "a=b==ccddd"))
+      SbtDotenv.parseLine("FOO=\"blah # blah \r blah \n blah \"") should equal(Some("FOO", "blah # blah \r blah \n blah "))
     }
 
     "accept lines with whitespace around assignment operator" in {
       SbtDotenv.parseLine("FOO   =   boo") should equal(Some("FOO", "boo"))
+    }
+
+    "accept lines with escaped characters and unescape them" in {
+      SbtDotenv.parseLine("FOO=' \\\' \\\' '") should equal(Some("FOO", " \' \' "))
     }
 
     "accept lines with leading whitespace before variable name" in {

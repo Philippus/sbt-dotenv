@@ -92,9 +92,17 @@ object SbtDotenv extends AutoPlugin {
     """(?x)
        (?:^|\A)                  # start of line
        \s*                       # leading whitespace
-       ([a-zA-Z_]+[a-zA-Z0-9_]*) # variable name
+       ([a-zA-Z_]+[a-zA-Z0-9_]*) # variable name (captured)
        (?:\s*=\s*?)              # assignment with whitespace
-       (.*)                      # variable value
+       (                         # start variable value (captured)
+         '(?:\\'|[^'])*'           # single quoted variable
+         |                         # or
+         "(?:\\"|[^"])*"           # double quoted variable
+         |                         # or
+         [^\#\r\n]+                # unquoted variable
+       )                         # end variable value (captured)
+       \s*                       # trailing whitespace
+       (?:\#.*)?                 # trialing comment (optional)
        (?:$|\z)                  # end of line
     """.r
 
@@ -107,9 +115,21 @@ object SbtDotenv extends AutoPlugin {
   def parseLine(line: String): Option[(String, String)] = {
     line match {
       case LINE_REGEX(key, value) =>
-        Some(key -> value.split(" #")(0).trim)
+        Some(key -> unescapeCharacters(removeQuotes(value)))
       case _ =>
         None
     }
+  }
+
+  private def removeQuotes(value: String): String = {
+    value.trim match {
+      case quoted if quoted.startsWith("'") && quoted.endsWith("'") => quoted.substring(1, quoted.length - 1)
+      case quoted if quoted.startsWith("\"") && quoted.endsWith("\"") => quoted.substring(1, quoted.length - 1)
+      case unquoted => unquoted
+    }
+  }
+
+  private def unescapeCharacters(value: String): String = {
+    value.replaceAll("""\\([^$])""", "$1")
   }
 }
