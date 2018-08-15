@@ -88,7 +88,14 @@ object SbtDotenv extends AutoPlugin {
     }
   }
 
-  private def isValidLine(line: String): Boolean = line.matches("^[a-zA-Z_]+[a-zA-Z0-9_]*=.*")
+  private val LINE_REGEX =
+    """(?x)
+       ^                         # start of line
+       ([a-zA-Z_]+[a-zA-Z0-9_]*) # variable name
+       =                         # assignment
+       (.*)                      # variable value
+       $                         # end of line
+    """.r
 
   /**
    * Extract k/v pairs from each line as an environment Key -> Value.
@@ -97,11 +104,11 @@ object SbtDotenv extends AutoPlugin {
    * @return
    */
   def parseLine(line: String): Option[(String, String)] = {
-    if (isValidLine(line)) {
-      val splitted = line.split("=", 2)
-      Some(splitted(0) -> splitted(1).split(" #")(0).trim)
-    } else {
-      None
+    line match {
+      case LINE_REGEX(key, value) =>
+        Some(key -> value.split(" #")(0).trim)
+      case _ =>
+        None
     }
   }
 }
