@@ -51,8 +51,11 @@ class SbtDotenvSpec extends WordSpec with Matchers {
       SbtDotenv.isValidLine("FOO=1234") should equal(true)
       SbtDotenv.parseLine("FOO=1234") should equal(Some("FOO", "1234"))
 
-      SbtDotenv.isValidLine("F.OO=bar") should equal(false)
-      SbtDotenv.parseLine("F.OO=bar") should equal(None)
+      SbtDotenv.isValidLine("F.OO=bar") should equal(true)
+      SbtDotenv.parseLine("F.OO=bar") should equal(Some("F.OO", "bar"))
+
+      SbtDotenv.isValidLine("F/OO=bar") should equal(false)
+      SbtDotenv.parseLine("F/OO=bar") should equal(None)
 
       SbtDotenv.isValidLine("1234=5678") should equal(false)
       SbtDotenv.parseLine("1234=5678") should equal(None)
