@@ -92,6 +92,7 @@ object SbtDotenv extends AutoPlugin {
     """(?x)
        (?:^|\A)                  # start of line
        \s*                       # leading whitespace
+       (?:export\s+)?            # export (optional)
        ([a-zA-Z_]+[a-zA-Z0-9_]*) # variable name (captured)
        (?:\s*=\s*?)              # assignment with whitespace
        (                         # start variable value (captured)

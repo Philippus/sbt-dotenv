@@ -85,6 +85,10 @@ class SbtDotenvSpec extends WordSpec with Matchers {
       SbtDotenv.parseLine("   FOO=noo") should equal(Some("FOO", "noo"))
     }
 
+    "accept lines with leading export and ignore the export" in {
+      SbtDotenv.parseLine(" export FOO=noo") should equal(Some("FOO", "noo"))
+    }
+
     "validate correct lines in a .env file" in {
       SbtDotenv.parseLine("FOO=bar") should equal(Some("FOO", "bar"))
 
