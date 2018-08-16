@@ -91,6 +91,12 @@ class SbtDotenvSpec extends WordSpec with Matchers {
       SbtDotenv.parse(" export FOO=noo") should equal(Map("FOO" -> "noo"))
     }
 
+    "accept lines with variables containing undescores, periods, and hyphens" in {
+      SbtDotenv.parse(" export F.OO=period") should equal(Map("F.OO" -> "period"))
+      SbtDotenv.parse("FO-O=hyphen") should equal(Map("FO-O" -> "hyphen"))
+      SbtDotenv.parse("FOO__ = underscore") should equal(Map("FOO__" -> "underscore"))
+    }
+
     "accept multi-line variables" in {
       val content = """MY_CERT="-----BEGIN CERTIFICATE-----
         |123456789qwertyuiopasdfghjklzxcvbnm
@@ -107,8 +113,6 @@ class SbtDotenvSpec extends WordSpec with Matchers {
       SbtDotenv.parse("FOO=bar") should equal(Map("FOO" -> "bar"))
 
       SbtDotenv.parse("FOO=1234") should equal(Map("FOO" -> "1234"))
-
-      SbtDotenv.parse("F.OO=bar") should equal(Map())
 
       SbtDotenv.parse("COVERALLS_REPO_TOKEN=NTHnTHSNthnTHSntNt09aoesNTH6") should equal(Map("COVERALLS_REPO_TOKEN" -> "NTHnTHSNthnTHSntNt09aoesNTH6"))
     }
