@@ -52,6 +52,7 @@ MY_CERT="-----BEGIN CERTIFICATE-----
 # heredocs aren't supported!
 ```
 
+Variable expansion of the form `$FOO` and `${FOO}` is supported based on the values in `.env` or the system environment.
 
 ## Should I commit my .env file?
 
