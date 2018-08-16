@@ -8,8 +8,8 @@ description := "An sbt plugin to load environment variables from .env into the J
 scalaVersion := "2.12.4"
 
 libraryDependencies ++= Seq(
-    "net.java.dev.jna" % "jna" % "4.5.0",
-    "org.scalatest" %% "scalatest" % "3.0.4" % Test
+    "net.java.dev.jna" % "jna" % "4.5.2",
+    "org.scalatest" %% "scalatest" % "3.0.5" % Test
 )
 
 enablePlugins(ScriptedPlugin)
