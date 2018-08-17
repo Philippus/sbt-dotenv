@@ -40,6 +40,7 @@ class SbtDotenvSpec extends WordSpec with Matchers {
       val file = new File("./src/test/resources/.dotenv.valid")
 
       SbtDotenv.parseFile(file) should equal(Some(Map(
+        "EMPTY_VARIABLE" -> "",
         "MONGO_PORT" -> "17017",
         "COVERALLS_REPO_TOKEN" -> "aoeucaPDc2rvkFugUGlNaCGu3EOeoaeu63WLo5",
         "MONGO_URL" -> "http://localhost:$MONGO_PORT/mongo#asdf"
@@ -56,6 +57,10 @@ class SbtDotenvSpec extends WordSpec with Matchers {
 
     "not accept lines with no assignment" in {
       SbtDotenv.parse("F") should equal(Map())
+    }
+
+    "accept empty variables" in {
+      SbtDotenv.parse("EMPTY=\nONE=TWO") should equal(Map("EMPTY" -> "","ONE" -> "TWO"))
     }
 
     "accept unquoted strings containing whitespace" in {

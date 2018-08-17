@@ -103,7 +103,7 @@ object SbtDotenv extends AutoPlugin {
          |                  # or
          "(?:\\"|[^"])*"    # double quoted variable
          |                  # or
-         [^\#\r\n]+         # unquoted variable
+         [^\#\r\n]*         # unquoted variable
        )                  # end variable value (captured)
        \s*                # trailing whitespace
        (?:                # start trailing comment (optional)
