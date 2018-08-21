@@ -27,9 +27,29 @@ Create a .env file in the root of your project with some environment specific se
 vi .env
 
 ```
-MONGO_PORT=17017
-WHO=you
-I_BLOW_MY_NOSE=At $WHO
+# this is an example .env file, comments like this will be ignored
+URL_HOST=my-service.example.org # trailing comments are ignored too!
+
+# you can export variables like a regular shell script
+export URL_PORT=1234
+
+# variables can be quoted
+URL_PATH="/my-content#body"
+
+# variable expansion is supported
+URL=http://$SERVICE_HOST:${SERVICE_PORT}${URL_PATH}
+
+# these will work with sbt-dotenv, but won't work with `source .env`
+MY.VARIABLE=1
+MY-OTHER-VARIABLE=2
+
+# multiline variables work too
+MY_CERT="-----BEGIN CERTIFICATE-----
+123456789qwertyuiopasdfghjklzxcvbnm
+-----END CERTIFICATE-----
+"
+
+# heredocs aren't supported!
 ```
 
 Variable expansion of the form `$FOO` and `${FOO}` is supported based on the values in `.env` or the system environment.

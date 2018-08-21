@@ -1,2 +1,5 @@
-COVERALLS_REPO_TOKEN=aoeucaPDc2rvkFugUGlNaCGu3EOeoaeu63WLo5
+# this is a valid .env file
+EMPTY_VARIABLE=
+export COVERALLS_REPO_TOKEN=aoeucaPDc2rvkFugUGlNaCGu3EOeoaeu63WLo5 # some token
 MONGO_PORT=17017
+MONGO_URL="http://localhost:$MONGO_PORT/mongo#asdf"
