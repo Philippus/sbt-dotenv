@@ -36,8 +36,10 @@ import scala.io.Source
  */
 object SbtDotenv extends AutoPlugin {
 
+
   object autoImport {
-    val dotEnv = (s: State) => configureEnvironment(s)
+    val envFileName = settingKey[String]("The file name to define variables.")
+    def dotEnv(fileName: String) = (s: State) => configureEnvironment(s, fileName)
   }
 
   import autoImport._
@@ -46,7 +48,10 @@ object SbtDotenv extends AutoPlugin {
 
   // Automatically configure environment on load
   override lazy val buildSettings =
-    Seq(onLoad in Global := dotEnv compose (onLoad in Global).value)
+    Seq(
+      envFileName := ".env",
+      onLoad in Global := dotEnv((envFileName in ThisBuild).value) compose ((onLoad in Global).value)
+    )
 
   /**
    * Configures the sbt environment from a dotfile (.env) if one exists.
@@ -54,19 +59,19 @@ object SbtDotenv extends AutoPlugin {
    * @param state
    * @return
    */
-  def configureEnvironment(state: State): State = {
+  def configureEnvironment(state: State, fileName: String): State = {
     state.log.debug(s"Base directory: ${state.configuration.baseDirectory}")
-    state.log.debug(s"looking for .env file: ${state.configuration.baseDirectory}/.env")
-    val dotEnvFile: File = new File(s"${state.configuration.baseDirectory}/.env")
+    state.log.debug(s"looking for .env file: ${state.configuration.baseDirectory}/${fileName}")
+    val dotEnvFile: File = new File(s"${state.configuration.baseDirectory}/${fileName}")
     parseFile(dotEnvFile) match {
       case Some(environment) =>
-        state.log.debug(s".env detected. About to configure JVM System Environment with new map: $environment")
+        state.log.debug(s".env detected.(fileName=${fileName}) About to configure JVM System Environment with new map: $environment")
         val expandedEnvironment = VariableExpansion.expandAllVars(sys.env ++ environment, environment)
         NativeEnvironmentManager.setEnv(expandedEnvironment.asJava)
         DirtyEnvironmentHack.setEnv((sys.env ++ expandedEnvironment).asJava)
         state.log.info("Configured .env environment")
       case None =>
-        state.log.debug(s".env file not found, no .env environment configured.")
+        state.log.debug(s".env file not found(fileName=${fileName}), no .env environment configured.")
     }
     state
   }
