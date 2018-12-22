@@ -55,7 +55,7 @@ MY_CERT="-----BEGIN CERTIFICATE-----
 Variable expansion of the form `$FOO` and `${FOO}` is supported based on the values in `.env` or the system environment.
 
 ### Change file name
-It is possible to the file name `.env`
+It is possible to change the file name `.env`
 ```
 envFileName in ThisBuild := "dotenv"
 ```
