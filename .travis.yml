@@ -14,7 +14,7 @@ matrix:
     - env: SBT_VERSION=1.2.1
       jdk: oraclejdk8
     - env: SBT_VERSION=0.13.17
-      jdk: oraclejdk7
+      jdk: oraclejdk8
 
 script:
   - sbt ^^$SBT_VERSION clean test scripted
