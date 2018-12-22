@@ -54,6 +54,12 @@ MY_CERT="-----BEGIN CERTIFICATE-----
 
 Variable expansion of the form `$FOO` and `${FOO}` is supported based on the values in `.env` or the system environment.
 
+### Change file name
+It is possible to change the file name `.env`
+```
+envFileName in ThisBuild := "dotenv"
+```
+
 ## Should I commit my .env file?
 
 It is recommended that you store development-only settings in your `.env` file, and commit it to your repository. Make sure that all your credentials for your development environment are different from your other deployments. This makes it easy for other developers to get started on your project, without compromising your credentials for other environments.
