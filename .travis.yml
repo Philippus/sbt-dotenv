@@ -11,10 +11,10 @@ env:
 
 matrix:
   include:
-    - env: SBT_VERSION=1.2.1
+    - env: SBT_VERSION=1.2.7
       jdk: oraclejdk8
-    - env: SBT_VERSION=0.13.17
-      jdk: oraclejdk7
+    - env: SBT_VERSION=0.13.18
+      jdk: oraclejdk8
 
 script:
   - sbt ^^$SBT_VERSION clean test scripted
