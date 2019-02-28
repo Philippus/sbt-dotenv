@@ -9,7 +9,7 @@ scalaVersion := "2.12.8"
 
 libraryDependencies ++= Seq(
     "net.java.dev.jna" % "jna" % "5.2.0",
-    "org.scalatest" %% "scalatest" % "3.0.5" % Test
+    "org.scalatest" %% "scalatest" % "3.0.6" % Test
 )
 
 enablePlugins(ScriptedPlugin)
