@@ -1,8 +1,8 @@
 version := "0.1"
 
-ThisBuild / envFileName := "build.env"
+envFileName in ThisBuild := "build.env"
 
-Test / envFileName := "test.env"
+envFileName in Test := "test.env"
 
 fork in test := true
 
