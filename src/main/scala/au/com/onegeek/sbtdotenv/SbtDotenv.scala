@@ -37,14 +37,18 @@ import scala.io.Source
 object SbtDotenv extends AutoPlugin {
 
   object autoImport {
-    val envFileName = settingKey[String]("The file name to define variables.")
-    def dotEnv(fileName: String) =
-      (s: State) => configureEnvironment(s, fileName)
+    lazy val envFileName         = settingKey[String]("The file name to define variables.")
+    lazy val envFromFile         = taskKey[Map[String, String]]("Loads env configuration from file.")
+    def dotEnv(fileName: String) = (s: State) => configureEnvironment(s, fileName)
   }
 
   import autoImport._
 
   override def trigger = allRequirements
+
+  lazy val baseEnvFileSettings: Seq[Def.Setting[_]] = Seq(
+    envFromFile := envFromFileTask.value
+  )
 
   // Automatically configure environment on load
   override lazy val buildSettings =
@@ -52,6 +56,13 @@ object SbtDotenv extends AutoPlugin {
       envFileName := ".env",
       onLoad in Global := dotEnv((envFileName in ThisBuild).value) compose ((onLoad in Global).value)
     )
+
+  override lazy val projectSettings = inConfig(Test)(baseEnvFileSettings)
+
+  def envFromFileTask = Def.task {
+    val fileName = envFileName.value
+    loadAndExpand(state.value, fileName).getOrElse(Map.empty[String, String])
+  }
 
   /**
     * Configures the sbt environment from a dotfile (.env) if one exists.
@@ -68,7 +79,7 @@ object SbtDotenv extends AutoPlugin {
     state.log.debug(s"looking for .env file: ${baseDirectory}/${fileName}")
     val dotEnvFile: File = new File(s"${baseDirectory}/${fileName}")
     parseFile(dotEnvFile).map { environment =>
-      state.log.debug(s".env detected.(fileName=${fileName}) About to configure JVM System Environment with new map: $environment")
+      state.log.info(s".env detected (fileName=${fileName}). About to configure JVM System Environment with new map: $environment")
       VariableExpansion.expandAllVars(sys.env ++ environment, environment)
     }
   }
@@ -81,7 +92,7 @@ object SbtDotenv extends AutoPlugin {
   }
 
   def logNoFile(state: State, fileName: String) = {
-    state.log.debug(s".env file not found(fileName=${fileName}), no .env environment configured.")
+    state.log.warn(s".env file not found (fileName=${fileName}), no .env environment configured.")
     state
   }
 
