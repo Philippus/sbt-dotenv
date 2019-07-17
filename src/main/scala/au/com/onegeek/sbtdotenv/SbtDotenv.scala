@@ -68,9 +68,7 @@ object SbtDotenv extends AutoPlugin {
     state.log.debug(s"looking for .env file: ${baseDirectory}/${fileName}")
     val dotEnvFile: File = new File(s"${baseDirectory}/${fileName}")
     parseFile(dotEnvFile).map { environment =>
-      state.log.debug(
-        s".env detected.(fileName=${fileName}) About to configure JVM System Environment with new map: $environment"
-      )
+      state.log.debug(s".env detected.(fileName=${fileName}) About to configure JVM System Environment with new map: $environment")
       VariableExpansion.expandAllVars(sys.env ++ environment, environment)
     }
   }
@@ -78,13 +76,12 @@ object SbtDotenv extends AutoPlugin {
   def applyEnvironment(state: State)(expandedEnvironment: Map[String, String]) = {
     NativeEnvironmentManager.setEnv(expandedEnvironment.asJava)
     DirtyEnvironmentHack.setEnv((sys.env ++ expandedEnvironment).asJava)
+    state.log.info("Configured .env environment")
     state
   }
 
   def logNoFile(state: State, fileName: String) = {
-    state.log.debug(
-      s".env file not found(fileName=${fileName}), no .env environment configured."
-    )
+    state.log.debug(s".env file not found(fileName=${fileName}), no .env environment configured.")
     state
   }
 
