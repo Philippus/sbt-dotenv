@@ -140,24 +140,14 @@ object SbtDotenv extends AutoPlugin {
 
   def parse(source: Source): Map[String, String] = parse(source.mkString)
 
-  def parse(source: String): Map[String, String] =
-    LINE_REGEX
-      .findAllMatchIn(source)
-      .map(
-        keyValue =>
-          (
-            keyValue.group(1),
-            unescapeCharacters(removeQuotes(keyValue.group(2)))
-          )
-      )
-      .toMap
+  def parse(source: String): Map[String, String] = LINE_REGEX.findAllMatchIn(source)
+    .map(keyValue => (keyValue.group(1), unescapeCharacters(removeQuotes(keyValue.group(2)))))
+    .toMap
 
   private def removeQuotes(value: String): String = {
     value.trim match {
-      case quoted if quoted.startsWith("'") && quoted.endsWith("'") =>
-        quoted.substring(1, quoted.length - 1)
-      case quoted if quoted.startsWith("\"") && quoted.endsWith("\"") =>
-        quoted.substring(1, quoted.length - 1)
+      case quoted if quoted.startsWith("'") && quoted.endsWith("'") => quoted.substring(1, quoted.length - 1)
+      case quoted if quoted.startsWith("\"") && quoted.endsWith("\"") => quoted.substring(1, quoted.length - 1)
       case unquoted => unquoted
     }
   }
