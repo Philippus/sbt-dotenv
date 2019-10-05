@@ -36,6 +36,7 @@ import scala.io.Source
  */
 object SbtDotenv extends AutoPlugin {
 
+
   object autoImport {
     lazy val envFileName         = settingKey[String]("The file name to define variables.")
     lazy val envFromFile         = taskKey[Map[String, String]]("Loads env configuration from file.")
@@ -141,8 +142,8 @@ object SbtDotenv extends AutoPlugin {
   def parse(source: Source): Map[String, String] = parse(source.mkString)
 
   def parse(source: String): Map[String, String] = LINE_REGEX.findAllMatchIn(source)
-    .map(keyValue => (keyValue.group(1), unescapeCharacters(removeQuotes(keyValue.group(2)))))
-    .toMap
+      .map(keyValue => (keyValue.group(1), unescapeCharacters(removeQuotes(keyValue.group(2)))))
+      .toMap
 
   private def removeQuotes(value: String): String = {
     value.trim match {
