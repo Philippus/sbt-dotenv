@@ -58,10 +58,11 @@ object SbtDotenv extends AutoPlugin {
       onLoad in Global := dotEnv((envFileName in ThisBuild).value) compose ((onLoad in Global).value)
     )
 
-  override lazy val projectSettings = inConfig(Test)(baseEnvFileSettings)
+  override lazy val projectSettings = inConfig(Test)(baseEnvFileSettings) ++ inConfig(IntegrationTest)(baseEnvFileSettings)
 
   def envFromFileTask = Def.task {
     val fileName = envFileName.value
+    println("------- " + fileName)
     loadAndExpand(state.value, fileName).getOrElse(Map.empty[String, String])
   }
 

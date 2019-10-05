@@ -2,7 +2,14 @@
 
 > set envVars in Test := (envFromFile in Test).value
 
+> set envVars in IntegrationTest := (envFromFile in IntegrationTest).value
+
 > test
 
 > checkTest
+
+> it:test
+
+> checkIntegrationTest
+
 

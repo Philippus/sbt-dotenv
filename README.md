@@ -68,6 +68,13 @@ Test / envFileName := "test.env" // optional
 envVars in Test := (envFromFile in Test).value
 ```
 
+and integration tests:
+```
+IntegrationTest / envFileName := "test.env" // optional
+
+envVars in IntegrationTest := (envFromFile in IntegrationTest).value
+```
+
 
 ## Should I commit my .env file?
 
