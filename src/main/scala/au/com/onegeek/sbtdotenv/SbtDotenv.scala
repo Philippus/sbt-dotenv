@@ -62,7 +62,6 @@ object SbtDotenv extends AutoPlugin {
 
   def envFromFileTask = Def.task {
     val fileName = envFileName.value
-    println("------- " + fileName)
     loadAndExpand(state.value, fileName).getOrElse(Map.empty[String, String])
   }
 
