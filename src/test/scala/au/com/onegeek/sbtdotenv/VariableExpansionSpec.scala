@@ -24,9 +24,10 @@
 package au.com.onegeek.sbtdotenv
 
 import java.io.File
-import org.scalatest.{ Matchers, WordSpec }
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class VariableExpansionSpec extends WordSpec with Matchers {
+class VariableExpansionSpec extends AnyWordSpec with Matchers {
   "Variable expansion" should {
 
     "expand variables in values" in {
