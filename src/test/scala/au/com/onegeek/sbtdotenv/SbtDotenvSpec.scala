@@ -23,12 +23,13 @@
 package au.com.onegeek.sbtdotenv
 
 import java.io.File
-import org.scalatest.{ Matchers, WordSpec }
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 /**
  * Created by mfellows on 20/07/2014.
  */
-class SbtDotenvSpec extends WordSpec with Matchers {
+class SbtDotenvSpec extends AnyWordSpec with Matchers {
   "The plugin parser" should {
     "do nothing if no .env file exists" in {
       val file = new File("thisfilecannotexistunlessyoucreateit")
