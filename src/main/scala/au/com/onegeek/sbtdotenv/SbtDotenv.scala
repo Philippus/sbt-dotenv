@@ -80,7 +80,10 @@ object SbtDotenv extends AutoPlugin {
     state.log.debug(s"looking for .env file: ${baseDirectory}/${fileName}")
     val dotEnvFile: File = new File(s"${baseDirectory}/${fileName}")
     parseFile(dotEnvFile).map { environment =>
-      state.log.info(s".env detected (fileName=${fileName}). About to configure JVM System Environment with new map: $environment")
+      state.log.info(s".env detected (fileName=${fileName}). About to configure JVM System Environment with new map")
+      // Given the fact that the new environment might have sensitive information, we only print
+      // the new environment when debugging the build.
+      state.log.debug(s"New map: $environment")
       VariableExpansion.expandAllVars(sys.env ++ environment, environment)
     }
   }
