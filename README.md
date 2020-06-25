@@ -75,6 +75,11 @@ IntegrationTest / envFileName := "test.env" // optional
 envVars in IntegrationTest := (envFromFile in IntegrationTest).value
 ```
 
+### "Illegal reflective access" warnings
+
+On java versions 9 and up this plugin will give "illegal reflective access"-warnings. These can be avoided by starting sbt with these extra java options:
+
+```--illegal-access=deny --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED```
 
 ## Should I commit my .env file?
 
