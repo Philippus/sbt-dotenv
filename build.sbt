@@ -13,9 +13,16 @@ libraryDependencies ++= Seq(
 )
 
 enablePlugins(ScriptedPlugin)
-scriptedLaunchOpts := { scriptedLaunchOpts.value ++
-  Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
+
+scriptedLaunchOpts := {
+    if (System.getProperty("java.version").startsWith("1.")) {
+        scriptedLaunchOpts.value ++ Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
+    }
+    else {
+        scriptedLaunchOpts.value ++ Seq("--illegal-access=deny", "--add-opens", "java.base/java.util=ALL-UNNAMED", "--add-opens", "java.base/java.lang=ALL-UNNAMED", "-Xmx1024M", "-Dplugin.version=" + version.value)
+    }
 }
+
 scriptedBufferLog := false
 
 publishMavenStyle := false

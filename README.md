@@ -60,7 +60,7 @@ It is possible to change the file name `.env`
 envFileName in ThisBuild := "dotenv"
 ```
 
-### Use file to define envifornment for tests
+### Use file to define environment for tests
 It is possible to use same of alternative file to provide an environment for tests:
 ```
 Test / envFileName := "test.env" // optional
@@ -75,6 +75,11 @@ IntegrationTest / envFileName := "test.env" // optional
 envVars in IntegrationTest := (envFromFile in IntegrationTest).value
 ```
 
+### "Illegal reflective access" warnings
+
+On java versions 9 and up this plugin will give "illegal reflective access"-warnings. These can be avoided by starting sbt with these extra java options:
+
+```--illegal-access=deny --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED```
 
 ## Should I commit my .env file?
 

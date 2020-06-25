@@ -25,7 +25,7 @@ public abstract class NativeEnvironmentManager {
     static class WindowsNativeEnvironmentManagerImpl extends NativeEnvironmentManager {
         public interface WindowsEnvironmentLibC extends Library {
             WindowsEnvironmentLibC INSTANCE = (
-                (WindowsEnvironmentLibC) Native.loadLibrary("msvcrt",
+                (WindowsEnvironmentLibC) Native.load("msvcrt",
                     WindowsEnvironmentLibC.class)
             );
 
@@ -48,7 +48,7 @@ public abstract class NativeEnvironmentManager {
     static class PosixNativeEnvironmentManagerImpl extends NativeEnvironmentManager {
         public interface PosixEnvironmentLibC extends Library {
             PosixEnvironmentLibC INSTANCE = (
-                (PosixEnvironmentLibC) Native.loadLibrary("c",
+                (PosixEnvironmentLibC) Native.load("c",
                     PosixEnvironmentLibC.class)
             );
 
