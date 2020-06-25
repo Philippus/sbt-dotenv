@@ -60,7 +60,7 @@ It is possible to change the file name `.env`
 envFileName in ThisBuild := "dotenv"
 ```
 
-### Use file to define envifornment for tests
+### Use file to define environment for tests
 It is possible to use same of alternative file to provide an environment for tests:
 ```
 Test / envFileName := "test.env" // optional
