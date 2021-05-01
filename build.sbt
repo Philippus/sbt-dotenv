@@ -27,7 +27,9 @@ inThisBuild(List(
 ))
 
 // For all Sonatype accounts created on or after February 2021
-ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
+sonatypeCredentialHost := "s01.oss.sonatype.org"
+sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
+sonatypeProfileName := "au.com.onegeek"
 
 libraryDependencies ++= Seq(
     "net.java.dev.jna" % "jna" % "5.8.0",
