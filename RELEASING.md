@@ -8,7 +8,7 @@ TL;DR:
 
 ## What it does
 
-This should
+This should:
 
 1. Determine the new version tag
 2. Generate a change log
