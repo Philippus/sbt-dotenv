@@ -9,6 +9,9 @@ env:
     - secure: glhEB9krKsLbmcoQ5l6uDPGX+WWYThNwK24eUFkqutnum2avk98Z3e5sXtldDR386E1GSaDZYzWE8rv0AF9Xdqz4MvnZ/ZK11DtUfvWt9Vrd/NhsV081Mks3iJsyq9rqxk0byazUCuosuCnRTr4jzSE5LrGp2w7Fe1C/yKETYTc=
     - secure: LSz3qTRwykG5moCbWZoDH0eDu4EKEg89N3imxdGJfSrsX/iFpVKtFWfhk78vqBnJYj34H8jfNsm7v4ar8r4QFAXUGVrwAIBDcHuTDVphYBqwLdeImINb9gmUefOwg8z3aFqjkrnxts3U01K4Iuk1R5V6zTsBv5bXIp55/squ1oA=
 
+before_install:
+  - git fetch --tags
+
 matrix:
   include:
     - env: SBT_VERSION=1.3.13
@@ -27,8 +30,10 @@ script:
 
 deploy:
   provider: script
-  script: sbt 'set version := version.value.replace("-SNAPSHOT", "") + "." + System.getenv("TRAVIS_BUILD_NUMBER")' ^^$SBT_VERSION publish
+  script: sbt ^^$SBT_VERSION ci-release
   on:
+    tags: true
+    condition: $TRAVIS_TAG =~ ^v[0-9].*
     branch: master
     jdk: openjdk8
 
