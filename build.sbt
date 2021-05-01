@@ -26,6 +26,9 @@ inThisBuild(List(
   )
 ))
 
+// For all Sonatype accounts created on or after February 2021
+ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
+
 libraryDependencies ++= Seq(
     "net.java.dev.jna" % "jna" % "5.8.0",
     "org.scalatest" %% "scalatest" % "3.2.7" % Test
