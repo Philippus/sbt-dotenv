@@ -65,7 +65,7 @@ function generate_changelog() {
 
   log "Updating CHANGELOG.md"
   ed CHANGELOG.md << END
-7i
+3i
 
 ### $release_version ($date)
 $log
