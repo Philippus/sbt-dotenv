@@ -1,6 +1,9 @@
 # Changelog
 
 
+### v2.1.233 (23 May 2021)
+  * [bfb8265](https://github.com/mefellows/sbt-dotenv/commit/bfb8265) - fix: left in publishMavenStyle := false 🤦 (Matt Fellows, Sun May 23 14:44:31 2021 +1000)
+
 ### v2.1.232 (23 May 2021)
   * [d275c84](https://github.com/mefellows/sbt-dotenv/commit/d275c84) - chore: make sure 'publishMavenStyle := true' is set. Fixes #97 (Matt Fellows, Sun May 23 13:42:20 2021 +1000)
 
