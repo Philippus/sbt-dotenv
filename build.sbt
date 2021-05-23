@@ -6,6 +6,8 @@ description := "An sbt plugin to load environment variables from .env into the J
 
 scalaVersion := "2.12.8"
 
+publishMavenStyle := true
+
 inThisBuild(List(
   organization := "au.com.onegeek",
   homepage := Some(url("https://github.com/mefellows/sbt-dotenv")),
