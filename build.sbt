@@ -51,6 +51,4 @@ scriptedLaunchOpts := {
 
 scriptedBufferLog := false
 
-publishMavenStyle := false
-
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
