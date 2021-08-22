@@ -34,7 +34,7 @@ sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
 sonatypeProfileName := "au.com.onegeek"
 
 libraryDependencies ++= Seq(
-    "net.java.dev.jna" % "jna" % "5.8.0",
+    "net.java.dev.jna" % "jna" % "5.9.0",
     "org.scalatest" %% "scalatest" % "3.2.9" % Test
 )
 
