@@ -35,7 +35,7 @@ sonatypeProfileName := "au.com.onegeek"
 
 libraryDependencies ++= Seq(
     "net.java.dev.jna" % "jna" % "5.8.0",
-    "org.scalatest" %% "scalatest" % "3.2.9" % Test
+    "org.scalatest" %% "scalatest" % "3.2.10" % Test
 )
 
 enablePlugins(ScriptedPlugin)
