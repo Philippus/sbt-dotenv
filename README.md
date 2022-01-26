@@ -14,10 +14,10 @@ sbt-dotenv is intended to be used in development.
 
 ## Installation
 
-Add the following to your sbt `project/plugins.sbt` file:
-
-    addSbtPlugin("au.com.onegeek" % "sbt-dotenv" % "2.1.204")
-
+sbt-dotenv is published for sbt 1.3.9 and above. To start using it add the following to your plugins.sbt:
+```
+addSbtPlugin("au.com.onegeek" % "sbt-dotenv" % "2.1.204")
+```
 That's it - as soon as you start using sbt the environment is prepared.
 
 ## Usage
@@ -57,7 +57,7 @@ Variable expansion of the form `$FOO` and `${FOO}` is supported based on the val
 ### Change file name
 It is possible to change the file name `.env`
 ```
-envFileName in ThisBuild := "dotenv"
+ThisBuild  / envFileName := "dotenv"
 ```
 
 ### Use file to define environment for tests
@@ -65,14 +65,14 @@ It is possible to use same of alternative file to provide an environment for tes
 ```
 Test / envFileName := "test.env" // optional
 
-envVars in Test := (envFromFile in Test).value
+Test / envVars := (Test / envFromFile).value
 ```
 
 and integration tests:
 ```
 IntegrationTest / envFileName := "test.env" // optional
 
-envVars in IntegrationTest := (envFromFile in IntegrationTest).value
+IntegrationTest / envVars := (IntegrationTest / envFromFile).value
 ```
 
 ### "Illegal reflective access" warnings

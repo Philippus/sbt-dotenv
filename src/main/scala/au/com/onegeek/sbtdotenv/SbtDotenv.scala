@@ -55,7 +55,7 @@ object SbtDotenv extends AutoPlugin {
   override lazy val buildSettings =
     Seq(
       envFileName := ".env",
-      onLoad in Global := dotEnv((envFileName in ThisBuild).value) compose ((onLoad in Global).value)
+      Global / onLoad := dotEnv((ThisBuild / envFileName).value).compose((Global / onLoad).value)
     )
 
   override lazy val projectSettings = inConfig(Test)(baseEnvFileSettings) ++ inConfig(IntegrationTest)(baseEnvFileSettings)

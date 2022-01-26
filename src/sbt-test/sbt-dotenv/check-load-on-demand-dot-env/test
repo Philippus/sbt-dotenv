@@ -1,8 +1,8 @@
 > checkGlobal
 
-> set envVars in Test := (envFromFile in Test).value
+> set Test / envVars := (Test / envFromFile).value
 
-> set envVars in IntegrationTest := (envFromFile in IntegrationTest).value
+> set IntegrationTest / envVars := (IntegrationTest / envFromFile).value
 
 > test
 
@@ -11,5 +11,4 @@
 > it:test
 
 > checkIntegrationTest
-
 

@@ -1,6 +1,6 @@
 version := "0.1"
 
-envFileName in ThisBuild := "dotenv"
+ThisBuild / envFileName := "dotenv"
 
 TaskKey[Unit]("check") :=  {
   val lastLog: File = BuiltinCommands.lastLogFile(state.value).get

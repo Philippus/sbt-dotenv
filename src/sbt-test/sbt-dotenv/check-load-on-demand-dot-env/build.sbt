@@ -3,11 +3,11 @@ lazy val root = (project in file("."))
   .settings(Defaults.itSettings)
   .settings(
     version := "0.1",
-    envFileName in ThisBuild := "build.env",
-    envFileName in Test := "test.env",
-    envFileName in IntegrationTest := "integration.env",
-    fork in test := true,
-    fork in IntegrationTest := true
+    ThisBuild / envFileName := "build.env",
+    Test / envFileName := "test.env",
+    IntegrationTest / envFileName := "integration.env",
+    test / fork := true,
+    IntegrationTest / fork := true
   )
 
 TaskKey[Unit]("checkGlobal") :=  {
