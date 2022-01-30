@@ -1,37 +1,28 @@
-sbtPlugin := true
-
 name := "sbt-dotenv"
-
+organization := "au.com.onegeek"
 description := "An sbt plugin to load environment variables from .env into the JVM System Environment for local development. Assists with 'Twelve Factor App' development principle 3 'Store config in the environment'."
+startYear := Some(2014)
+homepage := Some(url("https://github.com/mefellows/sbt-dotenv"))
+licenses += ("MIT" -> url("https://raw.githubusercontent.com/mefellows/sbt-dotenv/master/LICENSE"))
 
-scalaVersion := "2.12.8"
-
-publishMavenStyle := true
-
-inThisBuild(List(
-  organization := "au.com.onegeek",
-  homepage := Some(url("https://github.com/mefellows/sbt-dotenv")),
-  licenses := List("MIT" -> url("https://raw.githubusercontent.com/mefellows/sbt-dotenv/master/LICENSE")),
-  developers := List(
-    Developer(
-        id    = "Philippus",
-        name  = "Philippus Baalman",
-        email = "",
-        url = url("http://wehkamp.nl")
-    ),
-    Developer(
-        id    = "mefellows",
-        name  = "Matt Fellows",
-        email = "",
-        url = url("http://www.onegeek.com.au")
-    )
+developers := List(
+  Developer(
+    id    = "Philippus",
+    name  = "Philippus Baalman",
+    email = "",
+    url = url("https://github.com/philippus")
+  ),
+  Developer(
+    id    = "mefellows",
+    name  = "Matt Fellows",
+    email = "",
+    url = url("http://www.onegeek.com.au")
   )
-))
+)
 
-// For all Sonatype accounts created on or after February 2021
-sonatypeCredentialHost := "s01.oss.sonatype.org"
-sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
-sonatypeProfileName := "au.com.onegeek"
+enablePlugins(SbtPlugin)
+sbtPlugin := true
+pluginCrossBuild / sbtVersion := "1.3.9" // minimum version we target
 
 libraryDependencies ++= Seq(
     "net.java.dev.jna" % "jna" % "5.10.0",
@@ -50,5 +41,3 @@ scriptedLaunchOpts := {
 }
 
 scriptedBufferLog := false
-
-licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
