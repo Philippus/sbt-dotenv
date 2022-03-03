@@ -89,6 +89,22 @@ It is recommended that you store development-only settings in your `.env` file, 
 
 Please note that this plugin takes advantage of sbt [Auto Plugins](http://www.scala-sbt.org/0.13/docs/Plugins.html) and therefore only works in sbt v0.13.5+
 
+## JDK Version >= 16
+
+Add the following to sbtopts:
+
+```
+-J--add-opens=java.base/java.util=ALL-UNNAMED
+-J--add-opens=java.base/java.lang=ALL-UNNAMED
+```
+
+or in `.jvmopts` next to `build.sbt`:
+
+```
+ --add-opens=java.base/java.util=ALL-UNNAMED
+ --add-opens=java.base/java.lang=ALL-UNNAMED
+```
+
 ## Contributing
 
 1. Fork it
