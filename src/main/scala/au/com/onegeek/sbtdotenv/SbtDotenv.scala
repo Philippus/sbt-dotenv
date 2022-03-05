@@ -1,25 +1,25 @@
-/**
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Matt Fellows (OneGeek)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+/** The MIT License (MIT)
+  *
+  * Copyright (c) 2014 Matt Fellows (OneGeek)
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a copy
+  * of this software and associated documentation files (the "Software"), to
+  * deal in the Software without restriction, including without limitation the
+  * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  * sell copies of the Software, and to permit persons to whom the Software is
+  * furnished to do so, subject to the following conditions:
+  *
+  * The above copyright notice and this permission notice shall be included in
+  * all copies or substantial portions of the Software.
+  *
+  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  * IN THE SOFTWARE.
+  */
 package au.com.onegeek.sbtdotenv
 
 import sbt.Keys._
@@ -28,19 +28,20 @@ import sbt._
 import scala.collection.JavaConverters._
 import scala.io.Source
 
-/**
- * sbt-dotenv - a dotenv (https://github.com/bkeepers/dotenv) implementation for Scala sbt.
- *
- * Reads a file
- *
- */
+/** sbt-dotenv - a dotenv (https://github.com/bkeepers/dotenv) implementation
+  * for Scala sbt.
+  *
+  * Reads a file
+  */
 object SbtDotenv extends AutoPlugin {
 
-
   object autoImport {
-    lazy val envFileName         = settingKey[String]("The file name to define variables.")
-    lazy val envFromFile         = taskKey[Map[String, String]]("Loads env configuration from file.")
-    def dotEnv(fileName: String) = (s: State) => configureEnvironment(s, fileName)
+    lazy val envFileName =
+      settingKey[String]("The file name to define variables.")
+    lazy val envFromFile =
+      taskKey[Map[String, String]]("Loads env configuration from file.")
+    def dotEnv(fileName: String) = (s: State) =>
+      configureEnvironment(s, fileName)
   }
 
   import autoImport._
@@ -55,32 +56,41 @@ object SbtDotenv extends AutoPlugin {
   override lazy val buildSettings =
     Seq(
       envFileName := ".env",
-      Global / onLoad := dotEnv((ThisBuild / envFileName).value).compose((Global / onLoad).value)
+      Global / onLoad := dotEnv((ThisBuild / envFileName).value)
+        .compose((Global / onLoad).value)
     )
 
-  override lazy val projectSettings = inConfig(Test)(baseEnvFileSettings) ++ inConfig(IntegrationTest)(baseEnvFileSettings)
+  override lazy val projectSettings = inConfig(Test)(
+    baseEnvFileSettings
+  ) ++ inConfig(IntegrationTest)(baseEnvFileSettings)
 
   def envFromFileTask = Def.task {
     val fileName = envFileName.value
     loadAndExpand(state.value, fileName).getOrElse(Map.empty[String, String])
   }
 
-  /**
-   * Configures the sbt environment from a dotfile (.env) if one exists.
-   *
-   * @param state
-   * @return
-   */
+  /** Configures the sbt environment from a dotfile (.env) if one exists.
+    *
+    * @param state
+    * @return
+    */
   def configureEnvironment(state: State, fileName: String): State =
-    loadAndExpand(state, fileName).fold(logNoFile(state, fileName))(applyEnvironment(state))
+    loadAndExpand(state, fileName).fold(logNoFile(state, fileName))(
+      applyEnvironment(state)
+    )
 
-  def loadAndExpand(state: State, fileName: String): Option[Map[String, String]] = {
+  def loadAndExpand(
+      state: State,
+      fileName: String
+  ): Option[Map[String, String]] = {
     val baseDirectory = state.configuration.baseDirectory
     state.log.debug(s"Base directory: ${baseDirectory}")
     state.log.debug(s"looking for .env file: ${baseDirectory}/${fileName}")
     val dotEnvFile: File = new File(s"${baseDirectory}/${fileName}")
     parseFile(dotEnvFile).map { environment =>
-      state.log.info(s".env detected (fileName=${fileName}). About to configure JVM System Environment with new map")
+      state.log.info(
+        s".env detected (fileName=${fileName}). About to configure JVM System Environment with new map"
+      )
       // Given the fact that the new environment might have sensitive information, we only print
       // the new environment when debugging the build.
       state.log.debug(s"New map: $environment")
@@ -88,7 +98,9 @@ object SbtDotenv extends AutoPlugin {
     }
   }
 
-  def applyEnvironment(state: State)(expandedEnvironment: Map[String, String]) = {
+  def applyEnvironment(
+      state: State
+  )(expandedEnvironment: Map[String, String]) = {
     NativeEnvironmentManager.setEnv(expandedEnvironment.asJava)
     DirtyEnvironmentHack.setEnv((sys.env ++ expandedEnvironment).asJava)
     state.log.info("Configured .env environment")
@@ -96,16 +108,19 @@ object SbtDotenv extends AutoPlugin {
   }
 
   def logNoFile(state: State, fileName: String) = {
-    state.log.warn(s".env file not found (fileName=${fileName}), no .env environment configured.")
+    state.log.warn(
+      s".env file not found (fileName=${fileName}), no .env environment configured."
+    )
     state
   }
 
-  /**
-   * Parse provided file in .env format and return an immutable environment Map[String, String]
-   *
-   * @param file .env file to read
-   * @return
-   */
+  /** Parse provided file in .env format and return an immutable environment
+    * Map[String, String]
+    *
+    * @param file
+    *   .env file to read
+    * @return
+    */
   def parseFile(file: File): Option[Map[String, String]] = {
     if (!file.exists) {
       None
@@ -144,14 +159,19 @@ object SbtDotenv extends AutoPlugin {
 
   def parse(source: Source): Map[String, String] = parse(source.mkString)
 
-  def parse(source: String): Map[String, String] = LINE_REGEX.findAllMatchIn(source)
-      .map(keyValue => (keyValue.group(1), unescapeCharacters(removeQuotes(keyValue.group(2)))))
-      .toMap
+  def parse(source: String): Map[String, String] = LINE_REGEX
+    .findAllMatchIn(source)
+    .map(keyValue =>
+      (keyValue.group(1), unescapeCharacters(removeQuotes(keyValue.group(2))))
+    )
+    .toMap
 
   private def removeQuotes(value: String): String = {
     value.trim match {
-      case quoted if quoted.startsWith("'") && quoted.endsWith("'") => quoted.substring(1, quoted.length - 1)
-      case quoted if quoted.startsWith("\"") && quoted.endsWith("\"") => quoted.substring(1, quoted.length - 1)
+      case quoted if quoted.startsWith("'") && quoted.endsWith("'") =>
+        quoted.substring(1, quoted.length - 1)
+      case quoted if quoted.startsWith("\"") && quoted.endsWith("\"") =>
+        quoted.substring(1, quoted.length - 1)
       case unquoted => unquoted
     }
   }
