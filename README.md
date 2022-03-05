@@ -1,6 +1,6 @@
 # sbt-dotenv
 
-[![Build Status](https://travis-ci.org/mefellows/sbt-dotenv.svg?branch=master)](https://travis-ci.org/mefellows/sbt-dotenv)
+[![build](https://github.com/Philippus/sbt-dotenv/workflows/build/badge.svg)](https://github.com/Philippus/sbt-dotenv/actions/workflows/scala.yml?query=workflow%3Abuild+branch%3Amaster)
 ![Current Version](https://img.shields.io/badge/version-2.1.204-brightgreen.svg?style=flat "2.1.204")
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat "MIT")](LICENSE)
 
