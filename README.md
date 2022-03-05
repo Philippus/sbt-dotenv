@@ -1,7 +1,8 @@
 # sbt-dotenv
 
-[![Build Status](https://travis-ci.org/mefellows/sbt-dotenv.svg?branch=master)](https://travis-ci.org/mefellows/sbt-dotenv)
+[![build](https://github.com/Philippus/sbt-dotenv/workflows/build/badge.svg)](https://github.com/Philippus/sbt-dotenv/actions/workflows/scala.yml?query=workflow%3Abuild+branch%3Amaster)
 ![Current Version](https://img.shields.io/badge/version-2.1.204-brightgreen.svg?style=flat "2.1.204")
+[![Scala Steward badge](https://img.shields.io/badge/Scala_Steward-helping-blue.svg?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAMAAAARSr4IAAAAVFBMVEUAAACHjojlOy5NWlrKzcYRKjGFjIbp293YycuLa3pYY2LSqql4f3pCUFTgSjNodYRmcXUsPD/NTTbjRS+2jomhgnzNc223cGvZS0HaSD0XLjbaSjElhIr+AAAAAXRSTlMAQObYZgAAAHlJREFUCNdNyosOwyAIhWHAQS1Vt7a77/3fcxxdmv0xwmckutAR1nkm4ggbyEcg/wWmlGLDAA3oL50xi6fk5ffZ3E2E3QfZDCcCN2YtbEWZt+Drc6u6rlqv7Uk0LdKqqr5rk2UCRXOk0vmQKGfc94nOJyQjouF9H/wCc9gECEYfONoAAAAASUVORK5CYII=)](https://scala-steward.org)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat "MIT")](LICENSE)
 
 sbt plugin to load environment variables from .env into the JVM System Environment for local development.
@@ -85,14 +86,5 @@ On java versions 9 and up this plugin will give "illegal reflective access"-warn
 
 It is recommended that you store development-only settings in your `.env` file, and commit it to your repository. Make sure that all your credentials for your development environment are different from your other deployments. This makes it easy for other developers to get started on your project, without compromising your credentials for other environments.
 
-## sbt version
-
-Please note that this plugin takes advantage of sbt [Auto Plugins](http://www.scala-sbt.org/0.13/docs/Plugins.html) and therefore only works in sbt v0.13.5+
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`) and, optionally, squash history (`git rebase -i <previous commit hash>`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+## License
+The code is available under the [MIT license](LICENSE).
