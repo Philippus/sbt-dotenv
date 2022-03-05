@@ -85,15 +85,3 @@ On java versions 9 and up this plugin will give "illegal reflective access"-warn
 ## Should I commit my .env file?
 
 It is recommended that you store development-only settings in your `.env` file, and commit it to your repository. Make sure that all your credentials for your development environment are different from your other deployments. This makes it easy for other developers to get started on your project, without compromising your credentials for other environments.
-
-## sbt version
-
-Please note that this plugin takes advantage of sbt [Auto Plugins](http://www.scala-sbt.org/0.13/docs/Plugins.html) and therefore only works in sbt v0.13.5+
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`) and, optionally, squash history (`git rebase -i <previous commit hash>`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
