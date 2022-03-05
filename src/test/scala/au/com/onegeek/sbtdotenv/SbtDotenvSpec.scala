@@ -1,34 +1,33 @@
-/**
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Matt Fellows (OneGeek)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+/** The MIT License (MIT)
+  *
+  * Copyright (c) 2014 Matt Fellows (OneGeek)
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a copy
+  * of this software and associated documentation files (the "Software"), to
+  * deal in the Software without restriction, including without limitation the
+  * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  * sell copies of the Software, and to permit persons to whom the Software is
+  * furnished to do so, subject to the following conditions:
+  *
+  * The above copyright notice and this permission notice shall be included in
+  * all copies or substantial portions of the Software.
+  *
+  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  * IN THE SOFTWARE.
+  */
 package au.com.onegeek.sbtdotenv
 
 import java.io.File
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-/**
- * Created by mfellows on 20/07/2014.
- */
+/** Created by mfellows on 20/07/2014.
+  */
 class SbtDotenvSpec extends AnyWordSpec with Matchers {
   "The plugin parser" should {
     "do nothing if no .env file exists" in {
@@ -40,12 +39,16 @@ class SbtDotenvSpec extends AnyWordSpec with Matchers {
     "read .env file into an environment Map" in {
       val file = new File("./src/test/resources/.dotenv.valid")
 
-      SbtDotenv.parseFile(file) should equal(Some(Map(
-        "EMPTY_VARIABLE" -> "",
-        "MONGO_PORT" -> "17017",
-        "COVERALLS_REPO_TOKEN" -> "aoeucaPDc2rvkFugUGlNaCGu3EOeoaeu63WLo5",
-        "MONGO_URL" -> "http://localhost:$MONGO_PORT/mongo#asdf"
-      )))
+      SbtDotenv.parseFile(file) should equal(
+        Some(
+          Map(
+            "EMPTY_VARIABLE" -> "",
+            "MONGO_PORT" -> "17017",
+            "COVERALLS_REPO_TOKEN" -> "aoeucaPDc2rvkFugUGlNaCGu3EOeoaeu63WLo5",
+            "MONGO_URL" -> "http://localhost:$MONGO_PORT/mongo#asdf"
+          )
+        )
+      )
     }
 
     "not accept empty lines" in {
@@ -61,24 +64,36 @@ class SbtDotenvSpec extends AnyWordSpec with Matchers {
     }
 
     "accept empty variables" in {
-      SbtDotenv.parse("EMPTY=\nONE=TWO") should equal(Map("EMPTY" -> "","ONE" -> "TWO"))
+      SbtDotenv.parse("EMPTY=\nONE=TWO") should equal(
+        Map("EMPTY" -> "", "ONE" -> "TWO")
+      )
     }
 
     "accept unquoted strings containing whitespace" in {
-      SbtDotenv.parse("SOMETHING=I love kittens") should equal(Map("SOMETHING" -> "I love kittens"))
+      SbtDotenv.parse("SOMETHING=I love kittens") should equal(
+        Map("SOMETHING" -> "I love kittens")
+      )
     }
 
     "accept lines with trailing comments" in {
-      SbtDotenv.parse("WITHOUT_COMMENT=ThisIsValue # here is a comment") should equal(Map("WITHOUT_COMMENT" -> "ThisIsValue"))
+      SbtDotenv.parse(
+        "WITHOUT_COMMENT=ThisIsValue # here is a comment"
+      ) should equal(Map("WITHOUT_COMMENT" -> "ThisIsValue"))
     }
 
     "accept lines with URLs containing # characters" in {
-      SbtDotenv.parse("WITH_HASH_URL='http://example.com#awesome-id'") should equal(Map("WITH_HASH_URL" -> "http://example.com#awesome-id"))
+      SbtDotenv.parse(
+        "WITH_HASH_URL='http://example.com#awesome-id'"
+      ) should equal(Map("WITH_HASH_URL" -> "http://example.com#awesome-id"))
     }
 
     "accept lines with quoted variables and strips quotes" in {
-      SbtDotenv.parse("FOO='a=b==ccddd'") should equal(Map("FOO" -> "a=b==ccddd"))
-      SbtDotenv.parse("FOO=\"blah # blah \r blah \n blah \"") should equal(Map("FOO" -> "blah # blah \r blah \n blah "))
+      SbtDotenv.parse("FOO='a=b==ccddd'") should equal(
+        Map("FOO" -> "a=b==ccddd")
+      )
+      SbtDotenv.parse("FOO=\"blah # blah \r blah \n blah \"") should equal(
+        Map("FOO" -> "blah # blah \r blah \n blah ")
+      )
     }
 
     "accept lines with whitespace around assignment operator" in {
@@ -98,9 +113,13 @@ class SbtDotenvSpec extends AnyWordSpec with Matchers {
     }
 
     "accept lines with variables containing undescores, periods, and hyphens" in {
-      SbtDotenv.parse(" export F.OO=period") should equal(Map("F.OO" -> "period"))
+      SbtDotenv.parse(" export F.OO=period") should equal(
+        Map("F.OO" -> "period")
+      )
       SbtDotenv.parse("FO-O=hyphen") should equal(Map("FO-O" -> "hyphen"))
-      SbtDotenv.parse("FOO__ = underscore") should equal(Map("FOO__" -> "underscore"))
+      SbtDotenv.parse("FOO__ = underscore") should equal(
+        Map("FOO__" -> "underscore")
+      )
     }
 
     "accept multi-line variables" in {
@@ -120,7 +139,11 @@ class SbtDotenvSpec extends AnyWordSpec with Matchers {
 
       SbtDotenv.parse("FOO=1234") should equal(Map("FOO" -> "1234"))
 
-      SbtDotenv.parse("COVERALLS_REPO_TOKEN=NTHnTHSNthnTHSntNt09aoesNTH6") should equal(Map("COVERALLS_REPO_TOKEN" -> "NTHnTHSNthnTHSntNt09aoesNTH6"))
+      SbtDotenv.parse(
+        "COVERALLS_REPO_TOKEN=NTHnTHSNthnTHSntNt09aoesNTH6"
+      ) should equal(
+        Map("COVERALLS_REPO_TOKEN" -> "NTHnTHSNthnTHSntNt09aoesNTH6")
+      )
     }
   }
 }
