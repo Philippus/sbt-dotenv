@@ -1,8 +1,8 @@
 name := "sbt-dotenv"
-organization := "au.com.onegeek"
+organization := "nl.gn0s1s"
 description := "An sbt plugin to load environment variables from .env into the JVM System Environment for local development. Assists with 'Twelve Factor App' development principle 3 'Store config in the environment'."
 startYear := Some(2014)
-homepage := Some(url("https://github.com/mefellows/sbt-dotenv"))
+homepage := Some(url("https://github.com/philippus/sbt-dotenv"))
 licenses += ("MIT" -> url("https://raw.githubusercontent.com/mefellows/sbt-dotenv/master/LICENSE"))
 
 developers := List(
