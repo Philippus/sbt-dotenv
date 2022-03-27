@@ -25,7 +25,7 @@ sbtPlugin := true
 pluginCrossBuild / sbtVersion := "1.3.9" // minimum version we target
 
 libraryDependencies ++= Seq(
-  "net.java.dev.jna" % "jna" % "5.10.0",
+  "net.java.dev.jna" % "jna" % "5.11.0",
   "org.scalatest" %% "scalatest" % "3.2.11" % Test
 )
 
