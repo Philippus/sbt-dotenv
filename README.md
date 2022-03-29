@@ -21,6 +21,10 @@ addSbtPlugin("au.com.onegeek" % "sbt-dotenv" % "2.1.204")
 ```
 That's it - as soon as you start using sbt the environment is prepared.
 
+### Apple Silicon (M1 chips)
+
+When on Apple Silicon (M1 chips), make sure to use sbt 1.6.0 or higher.
+
 ## Usage
 
 Create a .env file in the root of your project with some environment specific settings. For example, you might want to set a Mongo DB port to 17017 if it's installed by Homebrew.
