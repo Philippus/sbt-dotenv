@@ -2,7 +2,7 @@ version := "0.1"
 
 ThisBuild / envFileName := "dotenv"
 
-TaskKey[Unit]("check") :=  {
+TaskKey[Unit]("check") := {
   val lastLog: File = BuiltinCommands.lastLogFile(state.value).get
   val last: String = IO.read(lastLog)
   val contains = last.contains("Configured .env environment")

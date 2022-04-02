@@ -10,15 +10,17 @@ lazy val root = (project in file("."))
     IntegrationTest / fork := true
   )
 
-TaskKey[Unit]("checkGlobal") :=  {
+TaskKey[Unit]("checkGlobal") := {
   val lastLog: File = BuiltinCommands.lastLogFile(state.value).get
   val last: String = IO.read(lastLog)
-  val contains = last.contains(".env file not found (fileName=build.env), no .env environment configured.")
+  val contains = last.contains(
+    ".env file not found (fileName=build.env), no .env environment configured."
+  )
   if (!contains)
     sys.error("expected log message")
 }
 
-TaskKey[Unit]("checkTest") :=  {
+TaskKey[Unit]("checkTest") := {
   val lastLog: File = BuiltinCommands.lastLogFile(state.value).get
   val last: String = IO.read(lastLog)
   val contains = last.contains(".env detected (fileName=test.env)")
@@ -26,7 +28,7 @@ TaskKey[Unit]("checkTest") :=  {
     sys.error("expected log message")
 }
 
-TaskKey[Unit]("checkIntegrationTest") :=  {
+TaskKey[Unit]("checkIntegrationTest") := {
   val lastLog: File = BuiltinCommands.lastLogFile(state.value).get
   val last: String = IO.read(lastLog)
   val contains = last.contains(".env detected (fileName=integration.env)")
