@@ -84,9 +84,10 @@ object SbtDotenv extends AutoPlugin {
       fileName: String
   ): Option[Map[String, String]] = {
     val baseDirectory = state.configuration.baseDirectory
+    val filePath = if (fileName.startsWith("/")) fileName else s"${baseDirectory}/${fileName}"
     state.log.debug(s"Base directory: ${baseDirectory}")
-    state.log.debug(s"looking for .env file: ${baseDirectory}/${fileName}")
-    val dotEnvFile: File = new File(s"${baseDirectory}/${fileName}")
+    state.log.debug(s"looking for .env file: ${filePath}")
+    val dotEnvFile: File = new File(filePath)
     parseFile(dotEnvFile).map { environment =>
       state.log.info(
         s".env detected (fileName=${fileName}). About to configure JVM System Environment with new map"
