@@ -84,7 +84,9 @@ object SbtDotenv extends AutoPlugin {
       fileName: String
   ): Option[Map[String, String]] = {
     val baseDirectory = state.configuration.baseDirectory
-    val filePath = if (fileName.startsWith("/")) fileName else s"${baseDirectory}/${fileName}"
+    val filePath =
+      if (fileName.startsWith("/")) fileName
+      else s"${baseDirectory}/${fileName}"
     state.log.debug(s"Base directory: ${baseDirectory}")
     state.log.debug(s"looking for .env file: ${filePath}")
     val dotEnvFile: File = new File(filePath)
