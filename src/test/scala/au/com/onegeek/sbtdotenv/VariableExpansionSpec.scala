@@ -1,25 +1,19 @@
 /** The MIT License (MIT)
   *
-  * Copyright (c) 2014 Matt Fellows (OneGeek) Copyright (c) 2018 Edd Steel
-  * (eddsteel)
+  * Copyright (c) 2014 Matt Fellows (OneGeek) Copyright (c) 2018 Edd Steel (eddsteel)
   *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy
-  * of this software and associated documentation files (the "Software"), to
-  * deal in the Software without restriction, including without limitation the
-  * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-  * sell copies of the Software, and to permit persons to whom the Software is
-  * furnished to do so, subject to the following conditions:
+  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+  * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+  * permit persons to whom the Software is furnished to do so, subject to the following conditions:
   *
-  * The above copyright notice and this permission notice shall be included in
-  * all copies or substantial portions of the Software.
+  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+  * Software.
   *
-  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-  * IN THE SOFTWARE.
+  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   */
 package au.com.onegeek.sbtdotenv
 
@@ -33,10 +27,10 @@ class VariableExpansionSpec extends AnyWordSpec with Matchers {
     "expand variables in values" in {
       VariableExpansion.expandAllVars(
         Map("USER_NAME" -> "alice"),
-        Map("DB_USER" -> "$USER_NAME-")
+        Map("DB_USER"   -> "$USER_NAME-")
       ) should equal(Map("DB_USER" -> "alice-"))
       VariableExpansion.expandAllVars(
-        Map("USER" -> "bob"),
+        Map("USER"           -> "bob"),
         Map("CONSUMER_GROUP" -> "consumer-${USER}")
       ) should equal(Map("CONSUMER_GROUP" -> "consumer-bob"))
     }
@@ -56,7 +50,7 @@ class VariableExpansionSpec extends AnyWordSpec with Matchers {
 
       VariableExpansion.expandAllVars(
         Map("LEVEL" -> "ONE", "LEVEL_ONE" -> "LEVEL_TWO"),
-        Map("NEST" -> "${LEVEL_$LEVEL}")
+        Map("NEST"  -> "${LEVEL_$LEVEL}")
       ) should equal(Map("NEST" -> "LEVEL_TWO"))
     }
 
@@ -69,18 +63,18 @@ class VariableExpansionSpec extends AnyWordSpec with Matchers {
 
     "dereference up to 3 times" in {
       val defns = Map(
-        "TOE_BONE" -> "${FOOT_BONE}",
-        "FOOT_BONE" -> "${HEEL_BONE}",
-        "HEEL_BONE" -> "${ANKLE_BONE}",
-        "ANKLE_BONE" -> "SHIN_BONE",
-        "LOOP" -> "${LOOP}",
-        "PING" -> "${PONG}",
-        "PONG" -> "$PING",
-        "YOU" -> "I",
-        "CAN_I_GO" -> "IS_SUPPORTED",
-        "DEEP_IS_SUPPORTED" -> "DEEP_IS_YOUR_STACK",
+        "TOE_BONE"               -> "${FOOT_BONE}",
+        "FOOT_BONE"              -> "${HEEL_BONE}",
+        "HEEL_BONE"              -> "${ANKLE_BONE}",
+        "ANKLE_BONE"             -> "SHIN_BONE",
+        "LOOP"                   -> "${LOOP}",
+        "PING"                   -> "${PONG}",
+        "PONG"                   -> "$PING",
+        "YOU"                    -> "I",
+        "CAN_I_GO"               -> "IS_SUPPORTED",
+        "DEEP_IS_SUPPORTED"      -> "DEEP_IS_YOUR_STACK",
         "HOW_DEEP_IS_YOUR_STACK" -> "3",
-        "NEST" -> "${HOW_${DEEP_${CAN_${YOU}_GO}}}"
+        "NEST"                   -> "${HOW_${DEEP_${CAN_${YOU}_GO}}}"
       )
       VariableExpansion.expandAllVars(
         defns,
