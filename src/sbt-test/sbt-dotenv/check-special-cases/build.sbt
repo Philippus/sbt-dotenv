@@ -1,10 +1,10 @@
 version := "0.1"
 
 TaskKey[Unit]("check") := {
-  val log = sLog.value
+  val log           = sLog.value
   val lastLog: File = BuiltinCommands.lastLogFile(state.value).get
-  val last: String = IO.read(lastLog)
-  val expected = "Configured .env environment"
+  val last: String  = IO.read(lastLog)
+  val expected      = "Configured .env environment"
 
   log.info(s"checking for $expected in log output:\n$last")
   if (!last.contains(expected)) {
