@@ -4,8 +4,8 @@ ThisBuild / envFileName := "dotenv"
 
 TaskKey[Unit]("check") := {
   val lastLog: File = BuiltinCommands.lastLogFile(state.value).get
-  val last: String = IO.read(lastLog)
-  val contains = last.contains("Configured .env environment")
+  val last: String  = IO.read(lastLog)
+  val contains      = last.contains("Configured .env environment")
   if (!contains)
     sys.error("expected log message")
   if (sys.env.get("LINE_ONE").isEmpty || sys.env.get("LINE_TWO").isEmpty)
