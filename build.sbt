@@ -24,7 +24,7 @@ enablePlugins(SbtPlugin)
 pluginCrossBuild / sbtVersion := "1.3.9" // minimum version we target because of using Native.load, see https://github.com/Philippus/sbt-dotenv/issues/81
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.2.18" % Test
+  "org.scalatest" %% "scalatest" % "3.2.19" % Test
 )
 
 enablePlugins(ScriptedPlugin)
