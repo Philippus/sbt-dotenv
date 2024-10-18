@@ -23,9 +23,9 @@ That's it - as soon as you start using sbt the environment is prepared.
 
 Note that the group id has changed from `au.com.onegeek` to `nl.gn0s1s`.
 
-### Apple Silicon (M1 chips)
+### Apple Silicon (M series chips)
 
-When on Apple Silicon (M1 chips), make sure to use sbt 1.6.0 or higher.
+When on Apple Silicon (M series), make sure to use sbt 1.6.0 or higher.
 
 ## Usage
 
