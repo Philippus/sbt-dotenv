@@ -27,7 +27,7 @@ import scala.io.Source
   *
   * Reads a file
   */
-object SbtDotenv extends AutoPlugin {
+object SbtDotenv extends AutoPlugin with SlashSyntax {
 
   object autoImport {
     lazy val envFileName         =

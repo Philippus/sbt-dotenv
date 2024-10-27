@@ -8,7 +8,7 @@
 
 > checkTest
 
-> it:test
+> IntegrationTest / test
 
 > checkIntegrationTest
 
