@@ -21,7 +21,16 @@ developers := List(
 )
 
 enablePlugins(SbtPlugin)
-pluginCrossBuild / sbtVersion := "1.3.9" // minimum version we target because of using Native.load, see https://github.com/Philippus/sbt-dotenv/issues/81
+
+scalaVersion := "2.12.20"
+crossScalaVersions += "3.3.4"
+
+pluginCrossBuild / sbtVersion := {
+  scalaBinaryVersion.value match {
+    case "2.12" => "1.5.8"
+    case _      => "2.0.0-M2"
+  }
+}
 
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.2.19" % Test
