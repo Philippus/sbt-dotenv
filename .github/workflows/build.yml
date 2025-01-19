@@ -13,5 +13,6 @@ jobs:
         with:
           distribution: temurin
           java-version: 8
+      - uses: sbt/setup-sbt@v1
       - name: Run tests
         run: sbt clean +test +scripted
