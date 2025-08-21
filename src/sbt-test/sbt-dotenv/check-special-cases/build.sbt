@@ -1,6 +1,8 @@
 version := "0.1"
 
-TaskKey[Unit]("check") := {
+import Compat._
+
+TaskKey[Unit]("check") := Def.uncached {
   val log           = sLog.value
   val lastLog: File = BuiltinCommands.lastLogFile(state.value).get
   val last: String  = IO.read(lastLog)

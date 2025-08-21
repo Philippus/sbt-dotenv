@@ -42,9 +42,12 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
 
   override def trigger = allRequirements
 
-  lazy val baseEnvFileSettings: Seq[Def.Setting[_]] = Seq(
-    envFromFile := envFromFileTask.value
-  )
+  lazy val baseEnvFileSettings: Seq[Def.Setting[_]] = {
+    import au.com.onegeek.sbtdotenv.Compat._
+    Seq(
+      envFromFile := Def.uncached(envFromFileTask.value)
+    )
+  }
 
   // Automatically configure environment on load
   override lazy val buildSettings =
@@ -54,9 +57,12 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
         .compose((Global / onLoad).value)
     )
 
-  override lazy val projectSettings = inConfig(Test)(
-    baseEnvFileSettings
-  ) ++ inConfig(IntegrationTest)(baseEnvFileSettings)
+  override lazy val projectSettings = {
+    import au.com.onegeek.sbtdotenv.Compat._
+    inConfig(Test)(
+      baseEnvFileSettings
+    ) ++ additionalProjectSettings(baseEnvFileSettings)
+  }
 
   def envFromFileTask = Def.task {
     val fileName = envFileName.value
