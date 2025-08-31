@@ -1,7 +1,7 @@
 # sbt-dotenv
 
 [![build](https://github.com/Philippus/sbt-dotenv/workflows/build/badge.svg)](https://github.com/Philippus/sbt-dotenv/actions/workflows/scala.yml?query=workflow%3Abuild+branch%3Amain)
-![Current Version](https://img.shields.io/badge/version-3.1.1-brightgreen.svg?style=flat "3.1.1")
+![Current Version](https://img.shields.io/badge/version-3.2.0-brightgreen.svg?style=flat "3.2.0")
 [![Scala Steward badge](https://img.shields.io/badge/Scala_Steward-helping-blue.svg?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAMAAAARSr4IAAAAVFBMVEUAAACHjojlOy5NWlrKzcYRKjGFjIbp293YycuLa3pYY2LSqql4f3pCUFTgSjNodYRmcXUsPD/NTTbjRS+2jomhgnzNc223cGvZS0HaSD0XLjbaSjElhIr+AAAAAXRSTlMAQObYZgAAAHlJREFUCNdNyosOwyAIhWHAQS1Vt7a77/3fcxxdmv0xwmckutAR1nkm4ggbyEcg/wWmlGLDAA3oL50xi6fk5ffZ3E2E3QfZDCcCN2YtbEWZt+Drc6u6rlqv7Uk0LdKqqr5rk2UCRXOk0vmQKGfc94nOJyQjouF9H/wCc9gECEYfONoAAAAASUVORK5CYII=)](https://scala-steward.org)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat "MIT")](LICENSE)
 
@@ -17,7 +17,7 @@ sbt-dotenv is intended to be used in development.
 
 sbt-dotenv is published for sbt 1.5.8 and above. To start using it add the following to your plugins.sbt:
 ```
-addSbtPlugin("nl.gn0s1s" % "sbt-dotenv" % "3.1.1")
+addSbtPlugin("nl.gn0s1s" % "sbt-dotenv" % "3.2.0")
 ```
 That's it - as soon as you start using sbt the environment is prepared.
 
