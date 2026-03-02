@@ -54,7 +54,6 @@ scriptedLaunchOpts := {
     )
   } else {
     scriptedLaunchOpts.value ++ Seq(
-      "--illegal-access=deny",
       "--add-opens",
       "java.base/java.util=ALL-UNNAMED",
       "--add-opens",
