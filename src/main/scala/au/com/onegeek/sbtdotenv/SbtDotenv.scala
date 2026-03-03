@@ -43,7 +43,7 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
   override def trigger = allRequirements
 
   lazy val baseEnvFileSettings: Seq[Def.Setting[_]] = {
-    import au.com.onegeek.sbtdotenv.Compat._
+    import sbtcompat.PluginCompat._
     Seq(
       envFromFile := Def.uncached(envFromFileTask.value)
     )
