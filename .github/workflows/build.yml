@@ -15,4 +15,4 @@ jobs:
           java-version: 17
       - uses: sbt/setup-sbt@v1
       - name: Run tests
-        run: sbt clean +test +scripted
+        run: sbt clean +test 'scripted sbt1only/*' '+scripted sbt-dotenv/*'
