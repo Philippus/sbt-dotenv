@@ -2,7 +2,7 @@ version := "0.1"
 
 import Compat._
 
-TaskKey[Unit]("check") := Def.uncached {
+@transient TaskKey[Unit]("check") := {
   val log           = sLog.value
   val lastLog: File = BuiltinCommands.lastLogFile(state.value).get
   val last: String  = IO.read(lastLog)

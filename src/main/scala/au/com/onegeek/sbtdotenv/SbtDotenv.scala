@@ -32,7 +32,7 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
   object autoImport {
     lazy val envFileName         =
       settingKey[String]("The file name to define variables.")
-    lazy val envFromFile         =
+    @transient lazy val envFromFile         =
       taskKey[Map[String, String]]("Loads env configuration from file.")
     def dotEnv(fileName: String) = (s: State) =>
       configureEnvironment(s, fileName)
@@ -42,12 +42,10 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
 
   override def trigger = allRequirements
 
-  lazy val baseEnvFileSettings: Seq[Def.Setting[_]] = {
-    import sbtcompat.PluginCompat._
+  lazy val baseEnvFileSettings: Seq[Def.Setting[_]] =
     Seq(
-      envFromFile := Def.uncached(envFromFileTask.value)
+      envFromFile := envFromFileTask.value
     )
-  }
 
   // Automatically configure environment on load
   override lazy val buildSettings =
