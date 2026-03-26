@@ -1,0 +1,7 @@
+> checkGlobal
+
+> set Test / envVars := (Test / envFromFile).value
+
+> test
+
+> checkTest
