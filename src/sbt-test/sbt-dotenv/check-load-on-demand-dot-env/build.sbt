@@ -1,9 +1,9 @@
 lazy val root = (project in file("."))
   .settings(
-    version                       := "0.1",
-    ThisBuild / envFileName       := "build.env",
-    Test / envFileName            := "test.env",
-    test / fork                   := true
+    version                 := "0.1",
+    ThisBuild / envFileName := "build.env",
+    Test / envFileName      := "test.env",
+    test / fork             := true
   )
 
 TaskKey[Unit]("checkGlobal") := {
