@@ -30,12 +30,14 @@ import scala.io.Source
 object SbtDotenv extends AutoPlugin with SlashSyntax {
 
   object autoImport {
-    lazy val envFileName         =
+    lazy val envFileName                                                =
       settingKey[String]("The file name to define variables.")
-    lazy val envFromFile         =
+    lazy val envFileNames                                               =
+      settingKey[Seq[String]]("Files to concatenate to define env variables")
+    lazy val envFromFile                                                =
       taskKey[Map[String, String]]("Loads env configuration from file.")
-    def dotEnv(fileName: String) = (s: State) =>
-      configureEnvironment(s, fileName)
+    def dotEnv(fileName: String, fileNames: Option[Seq[String]] = None) = (s: State) =>
+      configureEnvironment(s, fileName, fileNames)
   }
 
   import autoImport._
@@ -53,7 +55,7 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
   override lazy val buildSettings =
     Seq(
       envFileName     := ".env",
-      Global / onLoad := dotEnv((ThisBuild / envFileName).value)
+      Global / onLoad := dotEnv((ThisBuild / envFileName).value, (ThisBuild / envFileNames).?.value)
         .compose((Global / onLoad).value)
     )
 
@@ -65,8 +67,9 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
   }
 
   def envFromFileTask = Def.task {
-    val fileName = envFileName.value
-    loadAndExpand(state.value, fileName).getOrElse(Map.empty[String, String])
+    val fileName  = envFileName.value
+    val fileNames = envFileNames.?.value
+    loadAndExpand(state.value, fileName, fileNames).getOrElse(Map.empty[String, String])
   }
 
   /** Configures the sbt environment from a dotfile (.env) if one exists.
@@ -74,31 +77,44 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
     * @param state
     * @return
     */
-  def configureEnvironment(state: State, fileName: String): State =
-    loadAndExpand(state, fileName).fold(logNoFile(state, fileName))(
+  def configureEnvironment(state: State, fileName: String, fileNames: Option[Seq[String]]): State =
+    loadAndExpand(state, fileName, fileNames).fold(logNoFile(state, fileName, fileNames))(
       applyEnvironment(state)
     )
 
   def loadAndExpand(
       state: State,
-      fileName: String
+      fileName: String,
+      fileNames: Option[Seq[String]]
   ): Option[Map[String, String]] = {
-    val baseDirectory    = state.configuration.baseDirectory
-    val filePath         =
-      if (fileName.startsWith("/")) fileName
-      else s"${baseDirectory}/${fileName}"
+    val baseDirectory          = state.configuration.baseDirectory
     state.log.debug(s"Base directory: ${baseDirectory}")
-    state.log.debug(s"looking for .env file: ${filePath}")
-    val dotEnvFile: File = new File(filePath)
-    parseFile(dotEnvFile).map { environment =>
-      state.log.info(
-        s".env detected (fileName=${fileName}). About to configure JVM System Environment with new map"
-      )
-      // Given the fact that the new environment might have sensitive information, we only print
-      // the new environment when debugging the build.
-      state.log.debug(s"New map: $environment")
-      VariableExpansion.expandAllVars(sys.env ++ environment, environment)
-    }
+    val resolvedFileNames      = if (fileNames.exists(_.nonEmpty)) fileNames.get else Seq(fileName)
+    val dotEnvFiles: Seq[File] =
+      resolvedFileNames.map { fileName =>
+        val filePath = if (fileName.startsWith("/")) fileName
+        else s"${baseDirectory}/${fileName}"
+        state.log.debug(s"looking for .env file: ${filePath}")
+        new File(filePath)
+      }
+    dotEnvFiles.foldLeft(Option.empty[Map[String, String]])((acc, file) =>
+      parseFile(file).map(env => acc.map(_ ++ env).getOrElse(env)).orElse(acc)
+    )
+      .map {
+        environment =>
+          if (fileNames.exists(_.nonEmpty))
+            state.log.info(
+              s".env detected (fileNames=${fileNames.get}). About to configure JVM System Environment with new map"
+            )
+          else
+            state.log.info(
+              s".env detected (fileName=${fileName}). About to configure JVM System Environment with new map"
+            )
+          // Given the fact that the new environment might have sensitive information, we only print
+          // the new environment when debugging the build.
+          state.log.debug(s"New map: $environment")
+          VariableExpansion.expandAllVars(sys.env ++ environment, environment)
+      }
   }
 
   def applyEnvironment(
@@ -110,10 +126,16 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
     state
   }
 
-  def logNoFile(state: State, fileName: String) = {
-    state.log.warn(
-      s".env file not found (fileName=${fileName}), no .env environment configured."
-    )
+  def logNoFile(state: State, fileName: String, fileNames: Option[Seq[String]]) = {
+    if (fileNames.exists(_.nonEmpty)) {
+      state.log.warn(
+        s".env file not found (fileNames=${fileNames.get}), no .env environment configured."
+      )
+    } else {
+      state.log.warn(
+        s".env file not found (fileName=${fileName}), no .env environment configured."
+      )
+    }
     state
   }
 
