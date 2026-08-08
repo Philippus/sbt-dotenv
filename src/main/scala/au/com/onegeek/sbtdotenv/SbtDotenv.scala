@@ -116,7 +116,8 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
     
     val newKeys = expandedEnvironment.keySet
     NativeEnvironmentManager.setEnv(expandedEnvironment.asJava)
-    DirtyEnvironmentHack.setEnv((sys.env ++ expandedEnvironment).asJava)
+    val currentEnv = System.getenv.asScala.toMap
+    DirtyEnvironmentHack.setEnv((currentEnv ++ expandedEnvironment).asJava)
     state.log.info("Configured .env environment")
     state.put(dotenvKeysAttribute, newKeys)
   }
