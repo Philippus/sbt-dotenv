@@ -1,0 +1,4 @@
+> checkVarsSet
+> removeVarFromFile
+> reload
+> checkVarARemovedAfterReload

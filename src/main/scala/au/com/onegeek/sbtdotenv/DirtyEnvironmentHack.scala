@@ -75,4 +75,51 @@ object DirtyEnvironmentHack {
       case Success(_)                       =>
     }
   }
+
+  def removeEnv(keys: java.util.Collection[String]): Unit = {
+   Try({
+     val processEnvironmentClass =
+       Class.forName("java.lang.ProcessEnvironment")
+
+     val theEnvironmentField =
+       processEnvironmentClass.getDeclaredField("theEnvironment")
+     theEnvironmentField.setAccessible(true)
+     val env = theEnvironmentField
+       .get(null)
+       .asInstanceOf[java.util.Map[String, String]] // scalastyle:off null
+     env.keySet.removeAll(keys)
+
+     val theCaseInsensitiveEnvironmentField =
+       processEnvironmentClass.getDeclaredField(
+         "theCaseInsensitiveEnvironment"
+       )
+     theCaseInsensitiveEnvironmentField.setAccessible(true)
+     val ciEnv = theCaseInsensitiveEnvironmentField
+       .get(null)
+       .asInstanceOf[java.util.Map[String, String]] // scalastyle:off null
+     ciEnv.keySet.removeAll(keys)
+   }) match {
+     case Failure(_: NoSuchFieldException) =>
+       Try({
+         val classes = classOf[Collections].getDeclaredClasses
+         val env     = System.getenv
+         classes
+           .filter(_.getName == "java.util.Collections$UnmodifiableMap")
+           .foreach(cl => {
+             val field = cl.getDeclaredField("m")
+             field.setAccessible(true)
+             val map   =
+               field.get(env).asInstanceOf[java.util.Map[String, String]]
+             map.keySet.removeAll(keys)
+           })
+       }) match {
+         case Failure(NonFatal(e2)) =>
+           e2.printStackTrace()
+         case Success(_)            =>
+       }
+     case Failure(NonFatal(e1))            =>
+       e1.printStackTrace()
+     case Success(_)                       =>
+   }
+  }
 }
