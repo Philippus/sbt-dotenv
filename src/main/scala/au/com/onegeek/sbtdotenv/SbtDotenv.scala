@@ -97,7 +97,7 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
       // Given the fact that the new environment might have sensitive information, we only print
       // the new environment when debugging the build.
       state.log.debug(s"New map: $environment")
-      VariableExpansion.expandAllVars(sys.env ++ environment, environment)
+      VariableExpansion.expandAllVars(environment ++ sys.env, environment)
     }
   }
 
