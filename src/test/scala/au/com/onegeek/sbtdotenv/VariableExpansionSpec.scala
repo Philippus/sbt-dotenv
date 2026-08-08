@@ -35,6 +35,14 @@ class VariableExpansionSpec extends AnyWordSpec with Matchers {
       ) should equal(Map("CONSUMER_GROUP" -> "consumer-bob"))
     }
 
+    "expand external variables when assigned back to same variable name" in {
+      // Simulates GITHUB_TOKEN declared in sys.env and referenced in .env
+      VariableExpansion.expandAllVars(
+        Map("GITHUB_TOKEN" -> "$GITHUB_TOKEN") ++ Map("GITHUB_TOKEN" -> "ghp_abc123xyz"),
+        Map("GITHUB_TOKEN" -> "$GITHUB_TOKEN")
+      ) should equal(Map("GITHUB_TOKEN" -> "ghp_abc123xyz"))
+    }
+
     "replace escaped $s with single $s" in {
       VariableExpansion.expandAllVars(
         Map.empty,
