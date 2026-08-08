@@ -40,6 +40,11 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
 
   import autoImport._
 
+  private val dotenvKeysAttribute = AttributeKey[Set[String]](
+    "dotenv-keys",
+    "Tracks environment variable keys loaded from .env file"
+  )
+
   override def trigger = allRequirements
 
   lazy val baseEnvFileSettings: Seq[Def.Setting[_]] = {
@@ -104,10 +109,16 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
   def applyEnvironment(
       state: State
   )(expandedEnvironment: Map[String, String]) = {
+    val oldKeys = state.get(dotenvKeysAttribute).getOrElse(Set.empty)
+    if (oldKeys.nonEmpty) {
+      DirtyEnvironmentHack.removeEnv(oldKeys.asJava)
+    }
+    
+    val newKeys = expandedEnvironment.keySet
     NativeEnvironmentManager.setEnv(expandedEnvironment.asJava)
     DirtyEnvironmentHack.setEnv((sys.env ++ expandedEnvironment).asJava)
     state.log.info("Configured .env environment")
-    state
+    state.put(dotenvKeysAttribute, newKeys)
   }
 
   def logNoFile(state: State, fileName: String) = {
