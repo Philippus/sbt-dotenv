@@ -26,7 +26,7 @@ enablePlugins(SbtPlugin)
 addSbtPlugin("com.github.sbt" % "sbt2-compat" % "0.2.0")
 
 scalaVersion := "2.12.21"
-crossScalaVersions += "3.8.4"
+crossScalaVersions += "3.9.0"
 
 scalacOptions ++= {
   scalaBinaryVersion.value match {
