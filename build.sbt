@@ -50,7 +50,8 @@ scriptedSbt := {
 }
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.2.20" % Test
+  "net.java.dev.jna" % "jna"       % "5.19.1",
+  "org.scalatest"   %% "scalatest" % "3.2.20" % Test
 )
 
 enablePlugins(ScriptedPlugin)

@@ -16,3 +16,9 @@ jobs:
       - uses: sbt/setup-sbt@v1
       - name: Run tests
         run: sbt clean +test 'scripted sbt1only/*' '+scripted sbt-dotenv/*'
+      - name: Check JNA dependency with sbt 2.1.0-RC1
+        run: >-
+          sbt
+          '++3.8.4'
+          'set scriptedSbt := "2.1.0-RC1"'
+          'scripted sbt-dotenv/check-jna-dep'
