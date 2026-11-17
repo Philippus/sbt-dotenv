@@ -7,18 +7,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [17, 21, 25]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 17
+          java-version: ${{ matrix.java }}
       - uses: sbt/setup-sbt@v1
       - name: Run tests
         run: sbt clean +test 'scripted sbt1only/*' '+scripted sbt-dotenv/*'
-      - name: Check JNA dependency with sbt 2.1.0-RC1
+      - name: Check JNA dependency with sbt 2.1.0
         run: >-
           sbt
-          '++3.8.4'
-          'set scriptedSbt := "2.1.0-RC1"'
+          '++3.9.0'
+          'set scriptedSbt := "2.1.0"'
           'scripted sbt-dotenv/check-jna-dep'
