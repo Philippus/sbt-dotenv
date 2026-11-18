@@ -47,7 +47,7 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
 
   override def trigger = allRequirements
 
-  lazy val baseEnvFileSettings: Seq[Def.Setting[_]] = {
+  lazy val baseEnvFileSettings: Seq[Def.Setting[?]] = {
     import sbtcompat.PluginCompat._
     Seq(
       envFromFile := Def.uncached(envFromFileTask.value)
@@ -113,8 +113,8 @@ object SbtDotenv extends AutoPlugin with SlashSyntax {
     if (oldKeys.nonEmpty) {
       DirtyEnvironmentHack.removeEnv(oldKeys.asJava)
     }
-    
-    val newKeys = expandedEnvironment.keySet
+
+    val newKeys    = expandedEnvironment.keySet
     NativeEnvironmentManager.setEnv(expandedEnvironment.asJava)
     val currentEnv = System.getenv.asScala.toMap
     DirtyEnvironmentHack.setEnv((currentEnv ++ expandedEnvironment).asJava)
